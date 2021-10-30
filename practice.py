@@ -4,7 +4,7 @@ def func_swj(str):
     print("asdfasd")
 
 def func_ksh(str):
-    pass
+    print(str)
 
 
 print("main chunck")
