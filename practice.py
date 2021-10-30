@@ -1,7 +1,7 @@
 # collaboration practice
 
 def func_swj(str):
-    pass
+    print("asdfasd")
 
 def func_ksh(str):
     print("hi")
