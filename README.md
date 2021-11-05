@@ -1,1 +1,1 @@
-# Chilbo_pygame_pjgit 
+# Chilbo_pygame_pj
