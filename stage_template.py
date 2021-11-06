@@ -39,19 +39,27 @@ class Attack:
 class Character:
     def __init__(self, path, info):
         self.name = info[0]
+        # image list : user - [ right image, left image ]
         self.image = []
         for img_path in info[1]:
             self.image.append(pygame.image.load(path+img_path))
+        # image size list : user - [ right image size, left image size ]
         self.size = []
         for img in self.image:
             self.size.append(img.get_rect().size)
+        # image init setting
         self.curr_state = 0
+        # image position
         self.pos = [ 0, 0 ]
         self.move_action = info[2][0]
         self.positioning = info[2][1]
         self.attack = info[2][2]
+        # group : 1 - monster, 0 - user
         self.group = info[3]
+        # other store value
         self.move_factor = 5
+        # self.move_factor_x = 5
+        # self.move_factor_y = 5
 
     def pos_init(self, curr_stage):
         if self.positioning != None:
