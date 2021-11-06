@@ -44,5 +44,10 @@ def stage1(name, path, fps, speed):
     # # group : There are user groups(0) and monster groups(1) in the game.
     ch_info_list = [ ("user", [ "/image/character_r.jpg", "/image/character_l.jpg" ], [ move_user, user_start, None, None ], 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], 1) ]
+    
     game = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
+    
+    for c in game.ch_list:
+        c.resize()
+    
     game.run()
