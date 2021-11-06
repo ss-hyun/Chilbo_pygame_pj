@@ -54,6 +54,7 @@ class Character:
         self.move_action = info[2][0]
         self.positioning = info[2][1]
         self.attack = info[2][2]
+        self.size_control = info[2][3]
         # group : 1 - monster, 0 - user
         self.group = info[3]
         # other store value
@@ -72,6 +73,11 @@ class Character:
     def shoot_atk(self, curr_stage):
         if self.attack != None:
             self.attack(self, curr_stage)
+
+    def resize(self):
+        if self.size_control != None:
+            self.size_control(self)
+
 
 class Stage:
     def __init__(self, game_name, stage_number, path, fps, speed, bg_image, ch_info_list):
