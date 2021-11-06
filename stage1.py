@@ -32,7 +32,8 @@ def boss_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, ch.size[ch.curr_state][1]-100 ]
 
 def boss_resize(ch):
-    pass
+    image_boss = pygame.image.load("/image/exboss.svg")
+    ch.boss_resize = pygame.transform.rotozoom(image_boss, 0, 2)
 
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
