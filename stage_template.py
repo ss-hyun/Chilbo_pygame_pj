@@ -97,7 +97,7 @@ class Stage:
                     for b in self.frame.button:
                         b.click()
                 elif event.type == pygame.KEYDOWN:
-                    self.event_key.append(event)
+                    self.event_key.append(event.key)
             if self.frame.pause:
                 continue
             
