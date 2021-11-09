@@ -40,21 +40,26 @@ class Character:
     def __init__(self, path, info):
         self.name = info[0]
         # image list : user - [ right image, left image ]
+        self.state_num = 0
         self.image = []
         for img_path in info[1]:
             self.image.append(pygame.image.load(path+img_path))
+            self.state_num += 1
         # image size list : user - [ right image size, left image size ]
         self.size = []
         for img in self.image:
             self.size.append(img.get_rect().size)
         # image init setting
         self.curr_state = 0
+        self.change_count = 0
+        self.state_change_speed = 20
+        self.change_direc = True # True : list index up, False : list index down
         # image position
         self.pos = [ 0, 0 ]
         self.move_action = info[2][0]
         self.positioning = info[2][1]
         self.attack = info[2][2]
-        self.size_control = info[2][3]
+        self.img_control = info[2][3]
         # group : 1 - monster, 0 - user
         self.group = info[3]
         # other store value
@@ -74,9 +79,9 @@ class Character:
         if self.attack != None:
             self.attack(self, curr_stage)
 
-    def resize(self):
-        if self.size_control != None:
-            self.size_control(self)
+    def img_transform(self):
+        if self.img_control != None:
+            self.img_control(self)
 
 
 class Stage:

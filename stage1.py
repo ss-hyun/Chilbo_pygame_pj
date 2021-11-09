@@ -33,10 +33,26 @@ def boss_start(ch, game):
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
-    l = len(ch.image)
-    for i in range(0, l):
-        # image
+    for i in range(0, ch.state_num):
+        # image resize
         ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 2)
+        # size variable change
+
+def arm_move(ch, game):
+    ch.change_count += 1
+    if ch.change_count == ch.state_change_speed:
+        ch.change_count= 0
+        if ch.curr_state == 0: ch.change_direc = True
+        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+        ch.curr_state += 1 if ch.change_direc else -1
+
+def arm_trans(ch):
+    for i in range(0, ch.state_num):
+        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.5)
+
+def arm1_start(ch, game):
+    ch.pos = [ 0, 0 ]
+    ch.curr_state = 2
 
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
@@ -44,13 +60,14 @@ def stage1(name, path, fps, speed):
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
     # # function list : A function of all actions that can be done as a character, including initialization.
-    # #                 [move, positioning, attack] - if it doesn't exist -> None
+    # #                 [move, positioning, attack, image transform] - if it doesn't exist -> None
     # # group : There are user groups(0) and monster groups(1) in the game.
     ch_info_list = [ ("user", [ "/image/character_r.jpg", "/image/character_l.jpg" ], [ move_user, user_start, None, None ], 0),
-                     ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], 1) ]
+                     ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], 1),
+                     ("boss_arm1", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm1_start, None, arm_trans ], 1) ]
     game = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
     
     for c in game.ch_list:
-        c.resize()
+        c.img_transform()
     
     game.run()
