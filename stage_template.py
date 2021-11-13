@@ -109,7 +109,7 @@ class Stage:
                     self.event_mouse.append(pygame.mouse.get_pos())
                     for b in self.frame.button:
                         b.click()
-                elif event.type == pygame.KEYDOWN and event.type == pygame.KEYUP:
+                elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     self.event_key.append(event)
             if self.frame.pause:
                 continue
