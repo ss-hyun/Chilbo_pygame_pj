@@ -57,10 +57,9 @@ class Character:
         self.size_control = info[2][3]
         # group : 1 - monster, 0 - user
         self.group = info[3]
-        # other store value
-        self.move_factor = 5
-        # self.move_factor_x = 5
-        # self.move_factor_y = 5
+        self.move_factor_x = 0
+        self.move_factor_y = 0
+
 
     def pos_init(self, curr_stage):
         if self.positioning != None:
@@ -110,8 +109,8 @@ class Stage:
                     self.event_mouse.append(pygame.mouse.get_pos())
                     for b in self.frame.button:
                         b.click()
-                elif event.type == pygame.KEYDOWN:
-                    self.event_key.append(event.key)
+                elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+                    self.event_key.append(event)
             if self.frame.pause:
                 continue
             

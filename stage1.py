@@ -3,20 +3,38 @@ import stage_template
 import random
 
 def move_user(ch, game):
-    ch.pos[0] += ch.move_factor
+    # ch.pos[0] += ch.move_factor
+    ch.pos[0] += ch.move_factor_x 
+    ch.pos[1] += ch.move_factor_y 
 
-    if ch.curr_state == 0 and ch.pos[0] > game.display_size[0]:
-        ch.pos[0] = -ch.size[ch.curr_state][0]
-    elif ch.curr_state == 1 and ch.pos[0] + ch.size[ch.curr_state][0] < 0:
-        ch.pos[0] = game.display_size[0]
     
-    for key in game.event_key:
-        if key == pygame.K_LEFT:
-            ch.move_factor = -ch.move_factor
-            ch.curr_state = 1
-        elif key == pygame.K_RIGHT:
-            ch.move_factor = -ch.move_factor
-            ch.curr_state = 0
+
+    #if ch.curr_state == 0 and ch.pos[0] > game.display_size[0]:
+        #ch.pos[0] = -ch.size[ch.curr_state][0]
+    #elif ch.curr_state == 1 and ch.pos[0] + ch.size[ch.curr_state][0] < 0:
+        #ch.pos[0] = game.display_size[0]
+
+
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:                        
+            if event.key == pygame.K_LEFT:
+              ch.move_factor_x = -10         
+            
+            elif event.key == pygame.K_RIGHT:
+              ch.move_factor_x = 10
+
+            elif event.key == pygame.K_UP:
+              ch.move_factor_y = -10
+
+            elif event.key == pygame.K_DOWN:
+              ch.move_factor_y = 10
+            
+       
+
+        
+
+
+
 
 def user_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
