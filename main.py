@@ -38,7 +38,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
             event_mouse.append(pygame.mouse.get_pos())
             for b in button_list:
-                b.click()
+                b.click() #ghkaus
         elif event.type == pygame.KEYDOWN:
             event_key.append(event)
 

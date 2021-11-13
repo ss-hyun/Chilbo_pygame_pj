@@ -51,7 +51,8 @@ class Character:
         self.positioning = info[2][1]
         self.attack = info[2][2]
         self.group = info[3]
-        self.move_factor = 5
+        self.move_factor_x = 0
+        self.move_factor_y = 0
 
     def pos_init(self, curr_stage):
         if self.positioning != None:
@@ -96,8 +97,8 @@ class Stage:
                     self.event_mouse.append(pygame.mouse.get_pos())
                     for b in self.frame.button:
                         b.click()
-                elif event.type == pygame.KEYDOWN:
-                    self.event_key.append(event.key)
+                elif event.type == pygame.KEYDOWN and event.type == pygame.KEYUP:
+                    self.event_key.append(event)
             if self.frame.pause:
                 continue
             
