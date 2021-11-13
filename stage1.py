@@ -13,21 +13,32 @@ def move_user(ch, game):
         #ch.pos[0] = -ch.size[ch.curr_state][0]
     #elif ch.curr_state == 1 and ch.pos[0] + ch.size[ch.curr_state][0] < 0:
         #ch.pos[0] = game.display_size[0]
+    speed = 5
 
 
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:                        
             if event.key == pygame.K_LEFT:
-              ch.move_factor_x = -10         
+              ch.move_factor_x = -speed         
             
             elif event.key == pygame.K_RIGHT:
-              ch.move_factor_x = 10
+              ch.move_factor_x = speed
 
             elif event.key == pygame.K_UP:
-              ch.move_factor_y = -10
+              ch.move_factor_y = -speed
 
             elif event.key == pygame.K_DOWN:
-              ch.move_factor_y = 10
+              ch.move_factor_y = speed
+        
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                ch.move_factor_y = 0
+            elif event.key == pygame.K_DOWN:
+                ch.move_factor_y = 0
+            elif event.key == pygame.K_RIGHT:
+                ch.move_factor_x = 0
+            elif event.key == pygame.K_LEFT:
+                ch.move_factor_x = 0
             
        
 
