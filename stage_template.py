@@ -38,13 +38,13 @@ class Attack:
 
 class Character:
     def __init__(self, path, info):
-        self.name = info[0]
+        self.name = info[0] 
         # image list : user - [ right image, left image ]
         self.state_num = 0
         self.image = []
-        for img_path in info[1]:
-            self.image.append(pygame.image.load(path+img_path))
-            self.state_num += 1
+        for img_path in info[1]:  
+            self.image.append(pygame.image.load(path+img_path))   
+            self.state_num += 1        
         # image size list : user - [ right image size, left image size ]
         self.size = []
         for img in self.image:
@@ -54,9 +54,10 @@ class Character:
         self.change_count = 0
         self.state_change_speed = 20
         self.change_direc = True # True : list index up, False : list index down
+        self.move_state = False
         # image position
         self.pos = [ 0, 0 ]
-        self.move_action = info[2][0]
+        self.move_action = info[2][0] 
         self.positioning = info[2][1]
         self.attack = info[2][2]
         self.img_control = info[2][3]
