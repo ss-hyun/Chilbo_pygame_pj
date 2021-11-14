@@ -51,12 +51,15 @@ def user_start(ch, game):
 #         ch.move_factor = random.randint(0,10)
 
 def boss_start(ch, game):
-    ch.pos = [ (game.display_size[0]-(ch.size[ch.curr_state][0] * 1.45))/2, ch.size[ch.curr_state][1]-180 ]
+    ch.pos = [ (game.display_size[0]-(ch.size[ch.curr_state][0] * 1.3))/2, ch.size[ch.curr_state][1]-220 ]
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
-    ch.image[0] = pygame.transform.rotozoom(ch.image[0], 0, 1.45)
+    l = len(ch.image)
+    for i in range(0, l):
+        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 1.3)
         # size variable change
+        # ch.size[ch.curr_state][i] *= 1.45 이거 전혀 못하겠습니다..
 
 def arm_move(ch, game):
     ch.change_count += 1
@@ -79,7 +82,7 @@ def arm2_start(ch, game):
     ch.curr_state = 2
 
 def stage1(name, path, fps, speed):
-    bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
+    bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
     # character info : (name, relative path list, function list, group)
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
