@@ -40,13 +40,6 @@ def move_user(ch, game):
             elif event.key == pygame.K_LEFT:
                 ch.move_factor_x = 0
             
-       
-
-        
-
-
-
-
 def user_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
 
@@ -62,10 +55,7 @@ def boss_start(ch, game):
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
-    l = len(ch.image)
-    for i in range(0, l):
-        # image
-        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 1.45)
+    ch.image[0] = pygame.transform.rotozoom(ch.image[0], 0, 1.45)
         # size variable change
 
 def arm_move(ch, game):
@@ -84,6 +74,10 @@ def arm1_start(ch, game):
     ch.pos = [ 0, 0 ]
     ch.curr_state = 2
 
+def arm2_start(ch, game):
+    ch.pos = [ 600, 0 ]
+    ch.curr_state = 2
+
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
     # character info : (name, relative path list, function list, group)
@@ -94,7 +88,9 @@ def stage1(name, path, fps, speed):
     # # group : There are user groups(0) and monster groups(1) in the game.
     ch_info_list = [ ("user", [ "/image/character_r.jpg", "/image/character_l.jpg" ], [ move_user, user_start, None, None ], 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], 1),
-                     ("boss_arm1", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm1_start, None, arm_trans ], 1) ]
+                     ("boss_arm1", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm1_start, None, arm_trans ], 1), 
+                     ("boss_arm2", [ "/image/fist_-1.png", "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_+3.png" ], [ arm_move, arm2_start, None, arm_trans ], 1) ]
+
     game = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
 
     for c in game.ch_list:
