@@ -39,8 +39,6 @@ def move_user(ch, game):
               ch.move_factor_y = speed            
               ch.curr_state = 8
 
-                    
-        
 
         if event.type == pygame.KEYUP:
             ch.move_state = False
@@ -64,13 +62,13 @@ def move_user(ch, game):
                 ch.curr_state = 1
 
     if ch.move_state == True:
-        if ch.change_count > 200:
+        if ch.change_count == 10:
             if ch.curr_state % 2 == 0:
                ch.curr_state += 1
             else:
                ch.curr_state -= 1
 
-        if ch.change_count > 400:
+        if ch.change_count == 20:
             ch.change_count = 0        
     
 
