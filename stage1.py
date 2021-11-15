@@ -1,3 +1,4 @@
+from typing import Sized
 import pygame
 import stage_template
 import random
@@ -86,16 +87,15 @@ def user_start(ch, game):
 #         ch.move_factor = random.randint(0,10)
 
 def boss_start(ch, game):
-    ch.pos = [ (game.display_size[0]-(ch.size[ch.curr_state][0] * 1.3))/2, ch.size[ch.curr_state][1]-220 ]
+    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, ch.size[ch.curr_state][1]-270 ]
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
     l = len(ch.image)
     for i in range(0, l):
-
         ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 1.3)
         # size variable change
-        # ch.size[ch.curr_state][i] *= 1.45 이거 전혀 못하겠습니다..
+        ch.size[i] = ch.image[i].get_rect().size
 
 def arm_move(ch, game):
     ch.change_count += 1
