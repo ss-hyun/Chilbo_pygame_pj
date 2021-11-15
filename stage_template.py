@@ -54,7 +54,7 @@ class Character:
         self.change_count = 0
         self.state_change_speed = 20
         self.change_direc = True # True : list index up, False : list index down
-        self.move_state = False
+        self.move_state = False        
         # image position
         self.pos = [ 0, 0 ]
         self.move_action = info[2][0] 
