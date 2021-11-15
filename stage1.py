@@ -114,8 +114,12 @@ def arm1_start(ch, game):
     ch.curr_state = 2
 
 def arm2_start(ch, game):
-    ch.pos = [ 600, 0 ]
+    ch.pos = [ -50, 200 ]
     ch.curr_state = 2
+
+def arm3_start(ch, game):
+    ch.pos = [ 670, 200 ]
+    ch.curr_state = 3
 
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
@@ -126,9 +130,11 @@ def stage1(name, path, fps, speed):
     # #                 [move, positioning, attack, image transform] - if it doesn't exist -> None
     # # group : There are user groups(0) and monster groups(1) in the game.
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, None, None ], 0),
+                     ("boss_arm2", [ "/image/fist_lv_+2.png", "/image/fist_lv_+1.png", "/image/fist_lv.png", "/image/fist_lv_-1.png" ], [ arm_move, arm2_start, None, arm_trans ], 1),
+                     ("boss_arm3", [ "/image/reverse_fist_lv_+2.png", "/image/reverse_fist_lv_+1.png", "/image/reverse_fist_lv.png", "/image/reverse_fist_lv_-1.png" ], [ arm_move, arm3_start, None, arm_trans ], 1),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], 1),
-                     ("boss_arm1", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm1_start, None, arm_trans ], 1), 
-                     ("boss_arm2", [ "/image/fist_-1.png", "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_+3.png" ], [ arm_move, arm2_start, None, arm_trans ], 1) ]
+                     # ("boss_arm1", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm1_start, None, arm_trans ], 1), 
+                     ]
 
     game = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
 
