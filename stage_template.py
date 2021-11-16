@@ -1,5 +1,6 @@
 import sys
 import pygame
+from pygame.constants import K_TAB
 import button
 
 class Stage_frame:
@@ -85,14 +86,21 @@ class Character:
 
 
 class Stage:
-    def __init__(self, game_name, stage_number, path, fps, speed, bg_image, ch_info_list):
+    def __init__(self, game_name, stage_number, path, fps, speed, bg_image, ch_info_list, before_stage = None):
         self.bg_image = bg_image
         self.display_size = self.bg_image.get_rect().size
         self.ch_list = []
         for ch_info in ch_info_list:
-            self.ch_list.append(Character(path, ch_info))
+            if isinstance(ch_info, str):
+                for c in before_stage.ch_list:
+                    if c.name == ch_info: self.ch_list.append(c)
+            else:
+                c = Character(path, ch_info)
+                self.ch_list.append(c)
+                c.img_transform()
         self.fps = fps
         self.speed = speed
+        self.stage_number = stage_number
         self.frame = Stage_frame(game_name+": STAGE "+str(stage_number), path, (self.display_size[0], 10))
         self.event_mouse = []
         self.event_key = []
@@ -116,6 +124,9 @@ class Stage:
                     for b in self.frame.button:
                         b.click()
                 elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+                    if event.type == pygame.KEYDOWN and event.key == K_TAB: # 임시로 tab 입력 시 stage change 하도록 설정
+                        self.frame.running = False
+                        break
                     self.event_key.append(event)
             if self.frame.pause:
                 continue

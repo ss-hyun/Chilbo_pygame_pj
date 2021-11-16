@@ -4,8 +4,6 @@ import stage_template
 import random
 
 def move_user(ch, game):
-    
-    
     # ch.pos[0] += ch.move_factor
     ch.pos[0] += ch.move_factor_x 
     ch.pos[1] += ch.move_factor_y 
@@ -13,10 +11,6 @@ def move_user(ch, game):
     if ch.pos[1] < -61:
         ch.pos[1] = -61
      
-                  
-   
-    
-
     #if ch.curr_state == 0 and ch.pos[0] > game.display_size[0]:
         #ch.pos[0] = -ch.size[ch.curr_state][0]
     #elif ch.curr_state == 1 and ch.pos[0] + ch.size[ch.curr_state][0] < 0:
@@ -36,7 +30,6 @@ def move_user(ch, game):
               ch.move_factor_x = -speed            
               ch.curr_state = 6
                   
-            
             elif event.key == pygame.K_RIGHT:
               ch.move_factor_x = speed              
               ch.curr_state = 4
@@ -44,10 +37,8 @@ def move_user(ch, game):
             elif event.key == pygame.K_UP:
               key_up = True
               ch.move_factor_y = -speed              
-              ch.curr_state = 10
-              print(ch.pos[1])              
-                                  
-                
+              ch.curr_state = 10         
+                           
             elif event.key == pygame.K_DOWN:
                 
                 ch.move_factor_y = speed            
@@ -60,7 +51,6 @@ def move_user(ch, game):
                 ch.move_factor_y = 0
                 ch.curr_state = 3
 
-
             elif event.key == pygame.K_DOWN:
                 ch.move_factor_y = 0
                 ch.curr_state = 2
@@ -70,10 +60,10 @@ def move_user(ch, game):
                 ch.move_factor_x = 0
                 ch.curr_state = 0
 
-
             elif event.key == pygame.K_LEFT:
                 ch.move_factor_x = 0
                 ch.curr_state = 1
+
 
     if ch.move_state == True:
         if ch.change_count == 10:
@@ -89,8 +79,6 @@ def move_user(ch, game):
 def user_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
     
-    
-
 
 # def boss_moving(ch, game):
 #     ch.pos[0] += ch.move_factor
@@ -99,8 +87,10 @@ def user_start(ch, game):
 #     elif ch.pos[0] < 0:
 #         ch.move_factor = random.randint(0,10)
 
+
 def boss_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, ch.size[ch.curr_state][1]-270 ]
+
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
@@ -110,6 +100,7 @@ def boss_resize(ch):
         # size variable change
         ch.size[i] = ch.image[i].get_rect().size
 
+
 def arm_move(ch, game):
     ch.change_count += 1
     if ch.change_count == ch.state_change_speed:
@@ -118,21 +109,34 @@ def arm_move(ch, game):
         elif ch.curr_state == ch.state_num-1: ch.change_direc = False
         ch.curr_state += 1 if ch.change_direc else -1
 
+
 def arm_trans(ch):
     for i in range(0, ch.state_num):
         ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.5)
+
 
 def arm1_start(ch, game):
     ch.pos = [ 0, 0 ]
     ch.curr_state = 2
 
+
 def arm2_start(ch, game):
     ch.pos = [ -50, 200 ]
     ch.curr_state = 2
 
+
 def arm3_start(ch, game):
     ch.pos = [ 670, 200 ]
     ch.curr_state = 3
+
+
+def laser_field1_start(ch, game):
+    ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1] ]
+
+
+def laser_field2_start(ch, game):
+    ch.pos = [ game.display_size[0] - ch.size[ch.curr_state][0], game.display_size[1] - ch.size[ch.curr_state][1] ]
+
 
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
@@ -149,9 +153,16 @@ def stage1(name, path, fps, speed):
                      # ("boss_arm1", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm1_start, None, arm_trans ], 1), 
                      ]
 
-    game = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
+    stage1_1 = stage_template.Stage(name, 1-1, path, fps, speed, bg_image, ch_info_list)
+    stage1_1.run()
 
-    for c in game.ch_list:
-       c.img_transform()
 
-    game.run()
+    bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
+
+    ch_info_list = ["user", "boss",
+                     ("laser_field1", [ "/image/laser_field.jpg" ], [ None, laser_field1_start, None, None ], 1),
+                     ("laser_field2", [ "/image/laser_field.jpg" ], [ None, laser_field2_start, None, None ], 1)]
+
+    stage1_2 = stage_template.Stage(name, 1-2, path, fps, speed, bg_image, ch_info_list, stage1_1)
+    stage1_2.run()
+    
