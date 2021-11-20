@@ -112,21 +112,16 @@ def arm_move(ch, game):
 
 def arm_trans(ch):
     for i in range(0, ch.state_num):
-        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.5)
+        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.65)
 
 
 def arm1_start(ch, game):
     ch.pos = [ 0, 0 ]
-    ch.curr_state = 2
-
-
-def arm2_start(ch, game):
-    ch.pos = [ -50, 200 ]
     ch.curr_state = 1
 
 
-def arm3_start(ch, game):
-    ch.pos = [ 670, 200 ]
+def arm2_start(ch, game):
+    ch.pos = [ 500, 0 ]
     ch.curr_state = 1
 
 
