@@ -122,12 +122,12 @@ def arm1_start(ch, game):
 
 def arm2_start(ch, game):
     ch.pos = [ -50, 200 ]
-    ch.curr_state = 2
+    ch.curr_state = 1
 
 
 def arm3_start(ch, game):
     ch.pos = [ 670, 200 ]
-    ch.curr_state = 3
+    ch.curr_state = 1
 
 
 def laser_field1_start(ch, game):
