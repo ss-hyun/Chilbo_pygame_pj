@@ -154,8 +154,6 @@ def stage1(name, path, fps, speed):
 
     stage1_1 = stage_template.Stage(name, 1-1, path, fps, speed, bg_image, ch_info_list)
     stage1_1.run()
-
-
     bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
 
     ch_info_list = ["user", "boss",
@@ -164,3 +162,4 @@ def stage1(name, path, fps, speed):
 
     stage1_2 = stage_template.Stage(name, 1-2, path, fps, speed, bg_image, ch_info_list, stage1_1)
     stage1_2.run()
+    
