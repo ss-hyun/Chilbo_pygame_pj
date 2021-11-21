@@ -147,8 +147,7 @@ def arm_move_fist(ch, game):
             if event.key == pygame.K_LCTRL:
                 ch.change_count= 0                
                 ch.curr_state = 3
-                if ch.curr_state == 3:
-                    ch.change_direc = True
+                ch.change_direc = True
 
 
 def arm_trans(ch):
