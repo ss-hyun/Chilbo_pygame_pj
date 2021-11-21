@@ -179,7 +179,7 @@ def stage1(name, path, fps, speed):
     # attack info : ( image path, damage, range )
     user_atk_info = [ [ "/image/bullet.png", 5, 9 ] ]
     
-    # character info : (name, relative path list, function list, attack image path, attack info list, group)
+    # character info : (name, relative path list, function list, attack info list, group)
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
     # # function list : A function of all actions that can be done as a character, including initialization.
