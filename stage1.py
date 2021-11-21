@@ -139,19 +139,19 @@ def arm_trans(ch):
 
 
 def arm1_start(ch, game):
-    ch.pos = [ 235, 0 ]
+    ch.pos = [ 300, 0 ]
     ch.curr_state = 1
 
 def arm2_start(ch, game):
-    ch.pos = [ 650, 0 ]
+    ch.pos = [ 700, 0 ]
     ch.curr_state = 1
 
 def arm3_start(ch, game):
-    ch.pos = [ 100, 0 ]
+    ch.pos = [ 190, 0 ]
     ch.curr_state = 1
 
 def arm4_start(ch, game):
-    ch.pos = [ 750, 0 ]
+    ch.pos = [ 700, 0 ]
     ch.curr_state = 1
 
 def arm5_start(ch, game):
@@ -159,7 +159,7 @@ def arm5_start(ch, game):
     ch.curr_state = 1
 
 def arm6_start(ch, game):
-    ch.pos = [ 880, 0 ]
+    ch.pos = [ 1000, 0 ]
     ch.curr_state = 1
 
 def laser_field1_start(ch, game):
@@ -181,12 +181,12 @@ def stage1(name, path, fps, speed):
 
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, None, user_resize ], "/image/bullet.png", 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
-                     ("boss_arm1", [ "/image/fist_+2.png", "/image/fist_+1.png", "/image/fist.png", "/image/fist_-1.png" ], [ arm_move, arm2_start, None, arm_trans ], None, 1),
-                     ("boss_arm2", [ "/image/r_fist_+2.png", "/image/r_fist_+1.png", "/image/r_fist.png", "/image/r_fist_-1.png" ], [ arm_move, arm1_start, None, arm_trans ], None, 1),
+                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png" ], [ arm_move, arm2_start, None, arm_trans ], None, 1),
+                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png" ], [ arm_move, arm1_start, None, arm_trans ], None, 1),
                      ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png" ], [ arm_move, arm4_start, None, arm_trans ], None, 1),
                      ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png" ], [ arm_move, arm3_start, None, arm_trans ], None, 1),
-                     ("boss_arm5", [ "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_0.png", "/image/saw2_-1.png", "/image/saw2_-2.png" ], [ arm_move, arm5_start, None, arm_trans ], None, 1),
-                     ("boss_arm6", [ "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2_0.png", "/image/r_saw2_-1.png", "/image/r_saw2_-2.png" ], [ arm_move, arm6_start, None, arm_trans ], None, 1),
+                     ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_+2.png" ], [ arm_move, arm5_start, None, arm_trans ], None, 1),
+                     ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png"  ], [ arm_move, arm6_start, None, arm_trans ], None, 1),
                     ]
 
     stage1_1 = stage_template.Stage(name, 1-1, path, fps, speed, bg_image, ch_info_list)
