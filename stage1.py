@@ -180,7 +180,7 @@ def stage1(name, path, fps, speed):
     # # group : There are user groups(0) and monster groups(1) in the game.
 
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, None, user_resize ], "/image/bullet.png", 0),
-                     ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], 1),                    
+                     ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
                      ("boss_arm1", [ "/image/fist_+2.png", "/image/fist_+1.png", "/image/fist.png", "/image/fist_-1.png" ], [ arm_move, arm2_start, None, arm_trans ], None, 1),
                      ("boss_arm2", [ "/image/r_fist_+2.png", "/image/r_fist_+1.png", "/image/r_fist.png", "/image/r_fist_-1.png" ], [ arm_move, arm1_start, None, arm_trans ], None, 1),
                      ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png" ], [ arm_move, arm4_start, None, arm_trans ], None, 1),
