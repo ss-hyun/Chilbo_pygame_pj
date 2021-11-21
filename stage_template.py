@@ -29,12 +29,34 @@ class Stage_frame:
 
 # 구 형태의 공격
 class Spherical_Attack:
-    def __init__(self, image, damage, pos, range, atk_move):
+    def __init__(self, image, damage, range, pos, atk_move):
         self.image = image,
         self.damage = damage
+        self.atk_range = range
         self.pos = pos
         self.atk_mv_action = atk_move
+        self.remove_count = 3
+        # List of variables you want to save here
+        # "variable name" : value
+        self.save_var = {}
+
+    # If you want to keep the attack, return True and if you want to remove it, return False.
+    def move(self, curr_stage):
+        if self.atk_mv_action != None:
+            return self.atk_mv_action(self, curr_stage)
+        
+# 사각형 형태의 공격
+class Rectangle_Attack:
+    def __init__(self, image, damage, range, pos, atk_move):
+        self.image = image,
+        self.damage = damage
         self.atk_range = range
+        self.pos = pos
+        self.atk_mv_action = atk_move
+        self.remove_count = 3
+        # List of variables you want to save here
+        # "variable name" : value
+        self.save_var = {}
 
     # If you want to keep the attack, return True and if you want to remove it, return False.
     def move(self, curr_stage):
@@ -67,8 +89,11 @@ class Character:
         self.positioning = info[2][1]
         self.attack = info[2][2]
         self.img_control = info[2][3]
+        # atk_list[i][0] : image surface, [1] : damage
+        self.atk_list = []
+        if info[3]:
+            for atk in info[3]: self.atk_list.append((pygame.image.load(path+atk[0]), atk[1], atk[2]))
         # group : 1 - monster, 0 - user
-        if info[3]: self.atk_image = pygame.image.load(path+info[3])
         self.group = info[4]
         self.move_factor_x = 0
         self.move_factor_y = 0
@@ -118,7 +143,7 @@ class Stage:
         self.fps = fps
         self.speed = speed
         self.stage_number = stage_number
-        self.frame = Stage_frame(game_name+": STAGE "+stage_number, path, (self.display_size[0], 10))
+        self.frame = Stage_frame(game_name+": STAGE "+ str(stage_number), path, (self.display_size[0], 10))
         self.event_mouse = []
         self.event_key = []
         self.user_attack = []

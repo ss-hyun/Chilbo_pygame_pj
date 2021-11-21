@@ -87,7 +87,7 @@ def move_user(ch, game):
 
 def user_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
-    if game.stage_number == '1-1':
+    if game.stage_number == 1:
         ch.hp = 100
 
 def user_resize(ch):
@@ -101,7 +101,7 @@ def user_resize(ch):
 def user_attack(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_image, 5, ch.pos.copy(), 5, user_atk_move))
+            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), user_atk_move))
 
 def user_atk_move(atk, game):
     return True
@@ -174,14 +174,17 @@ def laser_field2_start(ch, game):
 
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
-    # character info : (name, relative path list, function list, attack image path, group)
+
+    # attack info : ( image path, damage, range )
+    user_atk_info = [ [ "/image/bullet.png", 5, 9 ] ]
+    
+    # character info : (name, relative path list, function list, attack image path, attack info list, group)
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
     # # function list : A function of all actions that can be done as a character, including initialization.
     # #                 [move, positioning, attack, image transform] - if it doesn't exist -> None
     # # group : There are user groups(0) and monster groups(1) in the game.
-
-    ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, user_attack, user_resize ], "/image/bullet.png", 0),
+    ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, user_attack, user_resize ], user_atk_info, 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
                      ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png" ], [ arm_move, arm2_start, None, arm_trans ], None, 1),
                      ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png" ], [ arm_move, arm1_start, None, arm_trans ], None, 1),
@@ -191,7 +194,7 @@ def stage1(name, path, fps, speed):
                      ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png"  ], [ arm_move, arm6_start, None, arm_trans ], None, 1),
                     ]
 
-    stage1_1 = stage_template.Stage(name, "1-1", path, fps, speed, bg_image, ch_info_list)
+    stage1_1 = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
     have_next = stage1_1.run()
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
    
@@ -201,7 +204,7 @@ def stage1(name, path, fps, speed):
                      ("laser_field2", [ "/image/laser_field.jpg" ], [ None, laser_field2_start, None, None ], None, 1)]
 
     if have_next:    
-        stage1_2 = stage_template.Stage(name, "1-2", path, fps, speed, bg_image, ch_info_list, stage1_1)
+        stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
         stage1_2.run()
     
 
