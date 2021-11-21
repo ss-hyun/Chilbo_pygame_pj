@@ -27,14 +27,19 @@ class Stage_frame:
     def stage_exit(self):
         self.running = False
 
-class Attack:
-    def __init__(self, damage, pos, atk_move):
-        self.demage = damage
+# 구 형태의 공격
+class Spherical_Attack:
+    def __init__(self, image, damage, pos, range, atk_move):
+        self.image = image,
+        self.damage = damage
         self.pos = pos
         self.atk_mv_action = atk_move
+        self.atk_range = range
 
+    # If you want to keep the attack, return True and if you want to remove it, return False.
     def move(self, curr_stage):
-        self.atk_mv_action(self, curr_stage)
+        if self.atk_mv_action != None:
+            self.atk_mv_action(self, curr_stage)
 
 
 class Character:
@@ -63,7 +68,8 @@ class Character:
         self.attack = info[2][2]
         self.img_control = info[2][3]
         # group : 1 - monster, 0 - user
-        self.group = info[3]
+        if info[3]: self.atk_image = pygame.image.load(path+info[3])
+        self.group = info[4]
         self.move_factor_x = 0
         self.move_factor_y = 0
 
@@ -132,13 +138,24 @@ class Stage:
                 continue
             
             background.blit(self.bg_image, (0, 0))
-            
-            for b in self.frame.button:
-                b.draw(background) 
+
+            for a in self.user_attack[:]:
+                background.blit(a.image[0], a.pos)
+                is_remove = a.move(a, self)
+                if not is_remove: self.user_attack.remove(a)
+                
+            for a in self.monster_attack[:]:
+                background.blit(a.image[0], a.pos)
+                is_remove = a.move(a, self)
+                if not is_remove: self.monster_attack.remove(a)
             
             for c in self.ch_list:
-                c.move(self)
                 background.blit(c.image[c.curr_state], c.pos)
+                c.move(self)
+                if c.attack: c.attack(c, self)
+
+            for b in self.frame.button:
+                b.draw(background) 
 
             pygame.display.update()
             self.event_mouse.clear()
