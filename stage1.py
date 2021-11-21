@@ -179,7 +179,7 @@ def stage1(name, path, fps, speed):
     # #                 [move, positioning, attack, image transform] - if it doesn't exist -> None
     # # group : There are user groups(0) and monster groups(1) in the game.
 
-    ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, None, user_resize ], "/image/bullet.png", 0),
+    ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, user_attack, user_resize ], "/image/bullet.png", 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
                      ("boss_arm1", [ "/image/fist_+2.png", "/image/fist_+1.png", "/image/fist.png", "/image/fist_-1.png" ], [ arm_move, arm2_start, None, arm_trans ], None, 1),
                      ("boss_arm2", [ "/image/r_fist_+2.png", "/image/r_fist_+1.png", "/image/r_fist.png", "/image/r_fist_-1.png" ], [ arm_move, arm1_start, None, arm_trans ], None, 1),
@@ -189,8 +189,8 @@ def stage1(name, path, fps, speed):
                      ("boss_arm6", [ "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2_0.png", "/image/r_saw2_-1.png", "/image/r_saw2_-2.png" ], [ arm_move, arm6_start, None, arm_trans ], None, 1),
                     ]
 
-    stage1_1 = stage_template.Stage(name, 1-1, path, fps, speed, bg_image, ch_info_list)
-    stage1_1.run()
+    stage1_1 = stage_template.Stage(name, "1-1", path, fps, speed, bg_image, ch_info_list)
+    have_next = stage1_1.run()
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
    
 
@@ -198,8 +198,9 @@ def stage1(name, path, fps, speed):
                      ("laser_field1", [ "/image/laser_field.jpg" ], [ None, laser_field1_start, None, None ], None, 1),
                      ("laser_field2", [ "/image/laser_field.jpg" ], [ None, laser_field2_start, None, None ], None, 1)]
 
-    stage1_2 = stage_template.Stage(name, 1-2, path, fps, speed, bg_image, ch_info_list, stage1_1)
-    stage1_2.run()
+    if have_next:    
+        stage1_2 = stage_template.Stage(name, "1-2", path, fps, speed, bg_image, ch_info_list, stage1_1)
+        stage1_2.run()
     
 
 

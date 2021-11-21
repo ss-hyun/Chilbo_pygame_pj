@@ -107,7 +107,7 @@ class Stage:
         self.fps = fps
         self.speed = speed
         self.stage_number = stage_number
-        self.frame = Stage_frame(game_name+": STAGE "+str(stage_number), path, (self.display_size[0], 10))
+        self.frame = Stage_frame(game_name+": STAGE "+stage_number, path, (self.display_size[0], 10))
         self.event_mouse = []
         self.event_key = []
         self.user_attack = []
@@ -134,13 +134,13 @@ class Stage:
                 elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     if event.type == pygame.KEYDOWN and event.key == K_TAB: # 임시로 tab 입력 시 stage change 하도록 설정
                         self.frame.running = False
+                        next_stage = True
                         break
                     self.event_key.append(event)
             if self.frame.pause:
                 continue
             
             background.blit(self.bg_image, (0, 0))
-            print(self.user_attack)
             for a in self.user_attack[:]:
                 background.blit(a.image[0], a.pos)
                 if not a.move(self): 
@@ -162,3 +162,5 @@ class Stage:
             pygame.display.update()
             self.event_mouse.clear()
             self.event_key.clear()
+            
+        return next_stage
