@@ -179,6 +179,7 @@ class Stage:
                 continue
             
             background.blit(self.bg_image, (0, 0))
+            
             for a in self.user_attack[:]:
                 background.blit(a.image[0], a.pos)
                 if not a.move(self): 
