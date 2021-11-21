@@ -151,7 +151,7 @@ def arm3_start(ch, game):
     ch.curr_state = 1
 
 def arm4_start(ch, game):
-    ch.pos = [ 700, 0 ]
+    ch.pos = [ 810, 0 ]
     ch.curr_state = 1
 
 def arm5_start(ch, game):
@@ -159,7 +159,7 @@ def arm5_start(ch, game):
     ch.curr_state = 1
 
 def arm6_start(ch, game):
-    ch.pos = [ 1000, 0 ]
+    ch.pos = [ 995, 0 ]
     ch.curr_state = 1
 
 def laser_field1_start(ch, game):
