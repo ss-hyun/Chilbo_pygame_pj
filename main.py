@@ -25,6 +25,7 @@ fps = pygame.time.Clock()
 event_key = []
 event_mouse = []
 button_list = []
+# stage 1 버튼을 game start 버튼으로 바꾸기
 button_list.append(button.Button(bt_image_st1_up, bt_image_st1_down, bt_st1_pos, stage1.stage1, name, path, fps, speed))
 
 while running:
@@ -38,7 +39,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
             event_mouse.append(pygame.mouse.get_pos())
             for b in button_list:
-                b.click() #ghkaus
+                b.click()
         elif event.type == pygame.KEYDOWN:
             event_key.append(event)
 
