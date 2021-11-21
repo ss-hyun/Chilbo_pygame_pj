@@ -138,6 +138,7 @@ def arm_move_fist(ch, game):
     if ch.change_count == ch.state_change_speed:
         ch.change_count= 0
         if ch.curr_state == 0: ch.change_direc = True
+        elif ch.curr_state < ch.state_num-4: ch.change_direc = False
         elif ch.curr_state >= ch.state_num-1: ch.change_direc = False
         ch.curr_state += 1 if ch.change_direc else -1
     
