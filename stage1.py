@@ -9,9 +9,7 @@ import random
 def move_user(ch, game):
     # ch.pos[0] += ch.move_factor
     ch.pos[0] += ch.move_factor_x 
-    ch.pos[1] += ch.move_factor_y 
-
-    # print(ch.pos[0])
+    ch.pos[1] += ch.move_factor_y    
 
     if ch.pos[1] < 208:
         ch.pos[1] = 208
@@ -31,7 +29,7 @@ def move_user(ch, game):
         ch.change_count += 1
     
     key_up = False
-
+  
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
 
@@ -193,7 +191,8 @@ def stage1(name, path, fps, speed):
 
     stage1_1 = stage_template.Stage(name, 1-1, path, fps, speed, bg_image, ch_info_list)
     stage1_1.run()
-    bg_image = pygame.image.load(path + "/image/stage1_background.jpg")
+    bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
+   
 
     ch_info_list = ["user", "boss",
                      ("laser_field1", [ "/image/laser_field.jpg" ], [ None, laser_field1_start, None, None ], None, 1),
@@ -202,3 +201,5 @@ def stage1(name, path, fps, speed):
     stage1_2 = stage_template.Stage(name, 1-2, path, fps, speed, bg_image, ch_info_list, stage1_1)
     stage1_2.run()
     
+
+
