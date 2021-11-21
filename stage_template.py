@@ -72,7 +72,7 @@ class Character:
         self.group = info[4]
         self.move_factor_x = 0
         self.move_factor_y = 0
-
+        self.hp = 0
 
     def pos_init(self, curr_stage):
         if self.positioning != None:
@@ -95,14 +95,25 @@ class Stage:
     def __init__(self, game_name, stage_number, path, fps, speed, bg_image, ch_info_list, before_stage = None):
         self.bg_image = bg_image
         self.display_size = self.bg_image.get_rect().size
-        self.ch_list = []
+        self.user_list = []
         for ch_info in ch_info_list:
             if isinstance(ch_info, str):
-                for c in before_stage.ch_list:
-                    if c.name == ch_info: self.ch_list.append(c)
+                for c in before_stage.user_list:
+                    if c.name == ch_info: self.user_list.append(c)
             else:
+                if ch_info[4] != 0: continue
                 c = Character(path, ch_info)
-                self.ch_list.append(c)
+                self.user_list.append(c)
+                c.img_transform()
+        self.monster_list = []
+        for ch_info in ch_info_list:
+            if isinstance(ch_info, str):
+                for c in before_stage.monster_list:
+                    if c.name == ch_info: self.monster_list.append(c)
+            else:
+                if ch_info[4] != 1: continue
+                c = Character(path, ch_info)
+                self.monster_list.append(c)
                 c.img_transform()
         self.fps = fps
         self.speed = speed
@@ -115,7 +126,9 @@ class Stage:
 
     def run(self):
         background = pygame.display.set_mode(self.display_size)
-        for c in self.ch_list:
+        for c in self.user_list:
+            c.pos_init(self)
+        for c in self.monster_list:
             c.pos_init(self)
         
         next_stage = False
@@ -151,7 +164,12 @@ class Stage:
                 if not a.move(self):
                     self.monster_attack.remove(a)
             
-            for c in self.ch_list:
+            for c in self.user_list:
+                background.blit(c.image[c.curr_state], c.pos)
+                c.move(self)
+                if c.attack: c.attack(c, self)
+                
+            for c in self.monster_list:
                 background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)
                 if c.attack: c.attack(c, self)

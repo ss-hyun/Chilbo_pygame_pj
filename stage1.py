@@ -87,6 +87,8 @@ def move_user(ch, game):
 
 def user_start(ch, game):
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
+    if game.stage_number == '1-1':
+        ch.hp = 100
 
 def user_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
