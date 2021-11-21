@@ -100,10 +100,10 @@ def user_resize(ch):
 def user_attack(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_image, 5, ch.pos, 5, user_atk_move))
+            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_image, 5, ch.pos.copy(), 5, user_atk_move))
 
 def user_atk_move(atk, game):
-    return 1
+    return True
 
 # def boss_moving(ch, game):
 #     ch.pos[0] += ch.move_factor

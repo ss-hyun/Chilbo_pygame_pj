@@ -39,7 +39,7 @@ class Spherical_Attack:
     # If you want to keep the attack, return True and if you want to remove it, return False.
     def move(self, curr_stage):
         if self.atk_mv_action != None:
-            self.atk_mv_action(self, curr_stage)
+            return self.atk_mv_action(self, curr_stage)
 
 
 class Character:
@@ -118,6 +118,8 @@ class Stage:
         for c in self.ch_list:
             c.pos_init(self)
         
+        next_stage = False
+        
         while self.frame.running:
             pygame.display.set_caption(self.frame.name)
             self.fps.tick(self.speed)
@@ -138,16 +140,16 @@ class Stage:
                 continue
             
             background.blit(self.bg_image, (0, 0))
-
+            print(self.user_attack)
             for a in self.user_attack[:]:
                 background.blit(a.image[0], a.pos)
-                is_remove = a.move(a, self)
-                if not is_remove: self.user_attack.remove(a)
+                if not a.move(self): 
+                    self.user_attack.remove(a)
                 
             for a in self.monster_attack[:]:
                 background.blit(a.image[0], a.pos)
-                is_remove = a.move(a, self)
-                if not is_remove: self.monster_attack.remove(a)
+                if not a.move(self):
+                    self.monster_attack.remove(a)
             
             for c in self.ch_list:
                 background.blit(c.image[c.curr_state], c.pos)
