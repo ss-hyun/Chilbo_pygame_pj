@@ -123,14 +123,29 @@ def boss_resize(ch):
         # size variable change
         ch.size[i] = ch.image[i].get_rect().size
 
-
 def arm_move(ch, game):
+    ch.change_count += 1
+    if ch.change_count == ch.state_change_speed:
+        ch.change_count= 1
+        if ch.curr_state == 0: ch.change_direc = True
+        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+        ch.curr_state += 1 if ch.change_direc else -1
+
+def arm_move_fist(ch, game):
     ch.change_count += 1
     if ch.change_count == ch.state_change_speed:
         ch.change_count= 0
         if ch.curr_state == 0: ch.change_direc = True
-        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+        elif ch.curr_state >= ch.state_num-1: ch.change_direc = False
         ch.curr_state += 1 if ch.change_direc else -1
+    
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LCTRL:
+                ch.change_count= 0                
+                ch.curr_state = 3
+                if ch.curr_state == 3:
+                    ch.change_direc = True
 
 
 def arm_trans(ch):
@@ -140,11 +155,11 @@ def arm_trans(ch):
 
 def arm1_start(ch, game):
     ch.pos = [ 300, 0 ]
-    ch.curr_state = 1
+    ch.curr_state = 0
 
 def arm2_start(ch, game):
     ch.pos = [ 700, 0 ]
-    ch.curr_state = 1
+    ch.curr_state = 0
 
 def arm3_start(ch, game):
     ch.pos = [ 190, 0 ]
@@ -181,8 +196,8 @@ def stage1(name, path, fps, speed):
 
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, None, user_resize ], "/image/bullet.png", 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
-                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png" ], [ arm_move, arm2_start, None, arm_trans ], None, 1),
-                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png" ], [ arm_move, arm1_start, None, arm_trans ], None, 1),
+                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist, arm2_start, None, arm_trans ], None, 1),
+                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist, arm1_start, None, arm_trans ], None, 1),
                      ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png" ], [ arm_move, arm4_start, None, arm_trans ], None, 1),
                      ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png" ], [ arm_move, arm3_start, None, arm_trans ], None, 1),
                      ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_+2.png" ], [ arm_move, arm5_start, None, arm_trans ], None, 1),
