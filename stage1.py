@@ -124,6 +124,11 @@ def arm2_start(ch, game):
     ch.pos = [ 500, 0 ]
     ch.curr_state = 1
 
+def pettern1_start(ch, game):
+    pass
+
+def pattern1_move(ch, game):
+    pass
 
 def laser_field1_start(ch, game):
     ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1] ]
