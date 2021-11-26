@@ -30,7 +30,7 @@ class Stage_frame:
 # 구 형태의 공격
 class Spherical_Attack:
     def __init__(self, image, damage, range, pos, atk_move):
-        self.image = image,
+        self.image = image
         self.damage = damage
         self.atk_range = range
         self.pos = pos
@@ -48,7 +48,7 @@ class Spherical_Attack:
 # 사각형 형태의 공격
 class Rectangle_Attack:
     def __init__(self, image, damage, range, pos, atk_move):
-        self.image = image,
+        self.image = image
         self.damage = damage
         self.atk_range = range
         self.pos = pos
@@ -181,12 +181,12 @@ class Stage:
             background.blit(self.bg_image, (0, 0))
             
             for a in self.user_attack[:]:
-                background.blit(a.image[0], a.pos)
+                background.blit(a.image, a.pos)
                 if not a.move(self): 
                     self.user_attack.remove(a)
                 
             for a in self.monster_attack[:]:
-                background.blit(a.image[0], a.pos)
+                background.blit(a.image, a.pos)
                 if not a.move(self):
                     self.monster_attack.remove(a)
             
