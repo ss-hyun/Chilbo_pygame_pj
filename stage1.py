@@ -125,21 +125,37 @@ def boss_resize(ch):
         # size variable change
         ch.size[i] = ch.image[i].get_rect().size
 
-def arm_move(ch, game):
-    ch.change_count += 1
-    if ch.change_count == ch.state_change_speed:
-        ch.change_count= 1
-        if ch.curr_state == 0: ch.change_direc = True
-        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
-        ch.curr_state += 1 if ch.change_direc else -1
+# def arm_move(ch, game):
+#     ch.change_count += 1
+#     if ch.change_count == ch.state_change_speed:
+#         ch.change_count= 1
+#         if ch.curr_state == 0: ch.change_direc = True
+#         elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+#         ch.curr_state += 1 if ch.change_direc else -1
 
-def arm_move_fist(ch, game):
+def arm_move_fist_1(ch, game):
     ch.change_count += 1
     if ch.change_count == ch.state_change_speed:
         ch.change_count= 0
         if ch.curr_state == 0: ch.change_direc = True
-        elif ch.curr_state < ch.state_num-4: ch.change_direc = False
-        elif ch.curr_state >= ch.state_num-1: ch.change_direc = False
+        elif ch.curr_state == ch.state_num-4: ch.change_direc = False
+        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+        ch.curr_state += 1 if ch.change_direc else -1
+    
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RCTRL:
+                ch.change_count= 0                
+                ch.curr_state = 3
+                ch.change_direc = True
+
+def arm_move_fist_2(ch, game):
+    ch.change_count += 1
+    if ch.change_count == ch.state_change_speed:
+        ch.change_count= 0
+        if ch.curr_state == 0: ch.change_direc = True
+        elif ch.curr_state == ch.state_num-4: ch.change_direc = False
+        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
         ch.curr_state += 1 if ch.change_direc else -1
     
     for event in game.event_key:
@@ -149,6 +165,38 @@ def arm_move_fist(ch, game):
                 ch.curr_state = 3
                 ch.change_direc = True
 
+def arm_move_forceps(ch, game):
+    ch.change_count += 1
+    if ch.change_count == ch.state_change_speed:
+        ch.change_count= 0
+        if ch.curr_state == 0: ch.change_direc = True
+        elif ch.curr_state == ch.state_num-3: ch.change_direc = False
+        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+        ch.curr_state += 1 if ch.change_direc else -1
+    
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LALT:
+                ch.change_count= 0                
+                ch.curr_state = 3
+                ch.change_direc = True
+                print("forceps_attack")
+
+def arm_move_saw(ch, game):
+    ch.change_count += 1
+    if ch.change_count == ch.state_change_speed:
+        ch.change_count= 0
+        if ch.curr_state == 0: ch.change_direc = True
+        elif ch.curr_state == ch.state_num-2: ch.change_direc = False
+        elif ch.curr_state == ch.state_num-1: ch.change_direc = False
+        ch.curr_state += 1 if ch.change_direc else -1 
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LSHIFT:
+                ch.change_count= 0                
+                ch.curr_state = 5
+                ch.change_direc = True
+                print("saw_attack")
 
 def arm_trans(ch):
     for i in range(0, ch.state_num):
@@ -179,6 +227,20 @@ def arm6_start(ch, game):
     ch.pos = [ 995, 0 ]
     ch.curr_state = 1
 
+
+def monster_attack(ch, game):
+    l = 1
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_z:
+                if l == 1:
+                    pass
+                if l == 2:
+                    pass
+                if l == 2:
+                    pass
+
+
 def laser_field1_start(ch, game):
     ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1] ]
 
@@ -202,12 +264,12 @@ def stage1(name, path, fps, speed):
     # # group : There are user groups(0) and monster groups(1) in the game.
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, user_attack, user_resize ], user_atk_info, 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
-                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist, arm2_start, None, arm_trans ], None, 1),
-                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist, arm1_start, None, arm_trans ], None, 1),
-                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png" ], [ arm_move, arm4_start, None, arm_trans ], None, 1),
-                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png" ], [ arm_move, arm3_start, None, arm_trans ], None, 1),
-                     ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png", "/image/saw2_+2.png" ], [ arm_move, arm5_start, None, arm_trans ], None, 1),
-                     ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png"  ], [ arm_move, arm6_start, None, arm_trans ], None, 1),
+                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, None, arm_trans ], None, 1),
+                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, None, arm_trans ], None, 1),
+                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, None, arm_trans ], None, 1),
+                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, None, arm_trans ], None, 1),
+                     ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png","/image/saw2.png", "/image/saw2.png" ], [ arm_move_saw, arm5_start, None, arm_trans ], None, 1),
+                     ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2.png", "/image/r_saw2.png" ], [ arm_move_saw, arm6_start, None, arm_trans ], None, 1),
                     ]
 
     stage1_1 = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
