@@ -180,16 +180,6 @@ class Stage:
             
             background.blit(self.bg_image, (0, 0))
             
-            for a in self.user_attack[:]:
-                background.blit(a.image, a.pos)
-                if not a.move(self): 
-                    self.user_attack.remove(a)
-                
-            for a in self.monster_attack[:]:
-                background.blit(a.image, a.pos)
-                if not a.move(self):
-                    self.monster_attack.remove(a)
-            
             for c in self.user_list:
                 background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)
@@ -199,6 +189,16 @@ class Stage:
                 background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)
                 if c.attack: c.attack(c, self)
+
+            for a in self.user_attack[:]:
+                background.blit(a.image, a.pos)
+                if not a.move(self): 
+                    self.user_attack.remove(a)
+                
+            for a in self.monster_attack[:]:
+                background.blit(a.image, a.pos)
+                if not a.move(self):
+                    self.monster_attack.remove(a)
 
             for b in self.frame.button:
                 b.draw(background) 
