@@ -247,36 +247,105 @@ def arm6_start(ch, game):
     ch.curr_state = 1
 
 
-def monster_attack(ch, game):
-    l = 1
+def forceps_attack_1(ch, game):
+    l = 3
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+100 , ch.pos[1]+200 ], monster_attack_move)
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
                 game.monster_attack.append(atk)
-                atk.save_var['d'] = l
+                atk.save_var['d1'] = l
 
-def monster_attack_move(atk, game):
-    if atk.save_var['d'] == 1:
+def forceps_attack_move_1(atk, game):
+    if atk.save_var['d1'] == 1:
         atk.pos[1] += 6
-        atk.save_var['d'] = 2
-    elif atk.save_var['d'] == 2:
+    elif atk.save_var['d1'] == 2:
         atk.pos[0] += 3
         atk.pos[1] += 6
-        atk.save_var['d'] = 3
     else:
         atk.pos[0] += 6
         atk.pos[1] += 6
-        atk.save_var['d'] = 1
     for user in game.user_list[:]:
-        if atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] < user.pos[0] + user.size[user.curr_state][0] :
+        if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
                 if user.hp <= 0:
-                    game.user_list.remove(user)               
+                    game.user_list.remove(user)
             return False 
+    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
+        return False
     return True
 
+def forceps_attack_2(ch, game):
+    l = 3
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_x:
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+200 ], forceps_attack_move_2)
+                game.monster_attack.append(atk)
+                atk.save_var['d2'] = l
+
+def forceps_attack_move_2(atk, game):
+    if atk.save_var['d2'] == 1:
+        atk.pos[1] += 6
+    elif atk.save_var['d2'] == 2:
+        atk.pos[0] -= 3
+        atk.pos[1] += 6
+    else:
+        atk.pos[0] -= 6
+        atk.pos[1] += 6
+    for user in game.user_list[:]:
+        if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
+            if user.name == "user":           
+                user.hp -= atk.damage
+                if user.hp <= 0:
+                    game.user_list.remove(user)
+            return False 
+    if atk.pos[0] <= 0 or atk.pos[1] <= 0:
+        return False
+    return True
+
+def saw_attack_1(ch, game):
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_n:
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+250 ], saw_attack_move_1)
+                game.monster_attack.append(atk)
+
+def saw_attack_move_1(atk, game):
+    atk.pos[0] += 4
+    atk.pos[1] += 4
+    for user in game.user_list[:]:
+        if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
+            if user.name == "user":           
+                user.hp -= atk.damage
+                if user.hp <= 0:
+                    game.user_list.remove(user)
+            return False 
+    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
+        return False
+    return True
+
+def saw_attack_2(ch, game):
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_m:
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+50 , ch.pos[1]+250 ], saw_attack_move_2)
+                game.monster_attack.append(atk)
+
+def saw_attack_move_2(atk, game):
+    atk.pos[0] -= 4
+    atk.pos[1] += 4
+    for user in game.user_list[:]:
+        if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
+            if user.name == "user":           
+                user.hp -= atk.damage
+                if user.hp <= 0:
+                    game.user_list.remove(user)
+            return False 
+    if atk.pos[0] <= 0 or atk.pos[1] <= 0:
+        return False
+    return True
 
 def laser_field1_start(ch, game):
     ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1] ]
@@ -292,7 +361,8 @@ def stage1(name, path, fps, speed):
 
     # attack info : ( image path, damage, range )
     user_atk_info = [ [ "/image/bullet.png", 1, 9 ] ] 
-    forceps_atk_info = [ ["/image/gugu.png", 1, 10] ]
+    forceps_atk_info = [ ["/image/gugu.png", 5, 10] ]
+    saw_atk_info = [ ["/image/sawsaw.png", 10, 10] ]
 
     # character info : (name, relative path list, function list, attack image path, attack info list, group)
     # # name : character name
@@ -305,10 +375,10 @@ def stage1(name, path, fps, speed):
 
                      ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, None, arm_trans ], None, 1),
                      ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, None, arm_trans ], None, 1),
-                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, None, arm_trans ], None, 1),
-                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, monster_attack, arm_trans ], forceps_atk_info, 1),
-                     ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png","/image/saw2.png", "/image/saw2.png" ], [ arm_move_saw, arm5_start, None, arm_trans ], None, 1),
-                     ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2.png", "/image/r_saw2.png" ], [ arm_move_saw, arm6_start, None, arm_trans ], None, 1),
+                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, forceps_attack_2, arm_trans ], forceps_atk_info, 1),
+                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, forceps_attack_1, arm_trans ], forceps_atk_info, 1),
+                     ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png","/image/saw2.png", "/image/saw2.png" ], [ arm_move_saw, arm5_start, saw_attack_1, arm_trans ], saw_atk_info, 1),
+                     ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2.png", "/image/r_saw2.png" ], [ arm_move_saw, arm6_start, saw_attack_2, arm_trans ], saw_atk_info, 1),
                     ]
 
     stage1_1 = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
