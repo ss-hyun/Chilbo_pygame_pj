@@ -256,7 +256,25 @@ def monster_attack(ch, game):
                 game.monster_attack.append(atk)
                 atk.save_var['d'] = l
 
-def monster_attack_move(ch, game):
+def monster_attack_move(atk, game):
+    if atk.save_var['d'] == 1:
+        atk.pos[1] += 6
+        atk.save_var['d'] = 2
+    elif atk.save_var['d'] == 2:
+        atk.pos[0] += 3
+        atk.pos[1] += 6
+        atk.save_var['d'] = 3
+    else:
+        atk.pos[0] += 6
+        atk.pos[1] += 6
+        atk.save_var['d'] = 1
+    for user in game.user_list[:]:
+        if atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] < user.pos[0] + user.size[user.curr_state][0] :
+            if user.name == "user":           
+                user.hp -= atk.damage
+                if user.hp <= 0:
+                    game.user_list.remove(user)               
+            return False 
     return True
 
 
@@ -287,8 +305,8 @@ def stage1(name, path, fps, speed):
 
                      ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, None, arm_trans ], None, 1),
                      ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, None, arm_trans ], None, 1),
-                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, monster_attack, arm_trans ], forceps_atk_info, 1),
-                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, None, arm_trans ], None, 1),
+                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, None, arm_trans ], None, 1),
+                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, monster_attack, arm_trans ], forceps_atk_info, 1),
                      ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png","/image/saw2.png", "/image/saw2.png" ], [ arm_move_saw, arm5_start, None, arm_trans ], None, 1),
                      ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2.png", "/image/r_saw2.png" ], [ arm_move_saw, arm6_start, None, arm_trans ], None, 1),
                     ]
