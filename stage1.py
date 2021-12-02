@@ -248,7 +248,7 @@ def arm6_start(ch, game):
 
 
 def forceps_attack_1(ch, game):
-    l = 3
+    l = 2
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
@@ -274,6 +274,7 @@ def forceps_attack_move_1(atk, game):
             return False 
     if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
         return False
+    print(atk.save_var['d1'])
     return True
 
 def forceps_attack_2(ch, game):
@@ -306,45 +307,55 @@ def forceps_attack_move_2(atk, game):
     return True
 
 def saw_attack_1(ch, game):
+    R = 4
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_n:
                 atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+250 ], saw_attack_move_1)
                 game.monster_attack.append(atk)
+                atk.save_var['Ss1'] = R
 
 def saw_attack_move_1(atk, game):
-    atk.pos[0] += 4
-    atk.pos[1] += 4
+    atk.pos[0] += atk.save_var['Ss1']
+    atk.pos[1] += atk.save_var['Ss1']
+    if atk.pos[0] <= 150 or atk.pos[1] <= 150:
+        return False
+    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
+        atk.save_var['Ss1'] = -4
     for user in game.user_list[:]:
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
                 if user.hp <= 0:
                     game.user_list.remove(user)
-            return False 
-    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
-        return False
+            atk.save_var['Ss1'] = -4
+            return True            
     return True
 
 def saw_attack_2(ch, game):
+    R = 4
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_m:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+50 , ch.pos[1]+250 ], saw_attack_move_2)
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+0 , ch.pos[1]+250 ], saw_attack_move_2)
                 game.monster_attack.append(atk)
+                atk.save_var['Ss2'] = R
 
 def saw_attack_move_2(atk, game):
-    atk.pos[0] -= 4
-    atk.pos[1] += 4
+    atk.pos[0] -= atk.save_var['Ss2']
+    atk.pos[1] += atk.save_var['Ss2']
+    if atk.pos[0] <= 175 or atk.pos[1] <= 200:
+        return False
+    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
+        atk.save_var['Ss2'] = -4
     for user in game.user_list[:]:
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
                 if user.hp <= 0:
                     game.user_list.remove(user)
-            return False 
-    if atk.pos[0] <= 0 or atk.pos[1] <= 0:
-        return False
+            atk.save_var['Ss2'] = -4
+            return True            
     return True
 
 def laser_field1_start(ch, game):
