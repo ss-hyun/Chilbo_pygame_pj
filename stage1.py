@@ -256,13 +256,12 @@ def fist_attack(ch, game):
 
 
 def forceps_attack_1(ch, game):
-    l = 2
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
                 atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
                 game.monster_attack.append(atk)
-                atk.save_var['d1'] = l
+                atk.save_var['d1'] = random.randrange(1, 4)
 
 def forceps_attack_move_1(atk, game):
     if atk.save_var['d1'] == 1:
@@ -270,29 +269,28 @@ def forceps_attack_move_1(atk, game):
     elif atk.save_var['d1'] == 2:
         atk.pos[0] += 3
         atk.pos[1] += 6
-    else:
+    elif atk.save_var['d1'] == 3:
         atk.pos[0] += 6
         atk.pos[1] += 6
+    if atk.pos[0] >= game.display_size[0] or atk.pos[1] >= game.display_size[1]:
+        return False
     for user in game.user_list[:]:
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
                 if user.hp <= 0:
                     game.user_list.remove(user)
-            return False 
-    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
-        return False
-    print(atk.save_var['d1'])
+            return False
     return True
+    
 
 def forceps_attack_2(ch, game):
-    l = 3
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x:
                 atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+200 ], forceps_attack_move_2)
                 game.monster_attack.append(atk)
-                atk.save_var['d2'] = l
+                atk.save_var['d2'] = random.randrange(1, 4)
 
 def forceps_attack_move_2(atk, game):
     if atk.save_var['d2'] == 1:
@@ -315,55 +313,93 @@ def forceps_attack_move_2(atk, game):
     return True
 
 def saw_attack_1(ch, game):
-    R = 4
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_n:
                 atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+250 ], saw_attack_move_1)
                 game.monster_attack.append(atk)
-                atk.save_var['Ss1'] = R
+                atk.remove_count == 3
+                atk.save_var['Ss1'] = random.randrange(1, 4)
 
 def saw_attack_move_1(atk, game):
-    atk.pos[0] += atk.save_var['Ss1']
-    atk.pos[1] += atk.save_var['Ss1']
+    if atk.remove_count == 3:
+        if atk.save_var['Ss1'] == 1:
+            atk.pos[0] += 4
+            atk.pos[1] += 4
+        elif atk.save_var['Ss1'] == 2:
+            atk.pos[0] += 4
+            atk.pos[1] += 2
+        elif atk.save_var['Ss1'] == 3:
+            atk.pos[0] += 6
+            atk.pos[1] += 2
+    elif atk.remove_count == 2:
+        if atk.save_var['Ss1'] == 1:
+            atk.pos[0] -= 4
+            atk.pos[1] -= 4
+        elif atk.save_var['Ss1'] == 2:
+            atk.pos[0] -= 4
+            atk.pos[1] -= 2
+        elif atk.save_var['Ss1'] == 3:
+            atk.pos[0] -= 6
+            atk.pos[1] -= 2
     if atk.pos[0] <= 150 or atk.pos[1] <= 150:
+        atk.remove_count = 3
         return False
-    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
-        atk.save_var['Ss1'] = -4
+    if atk.pos[0] >= game.display_size[0] - 70 or atk.pos[1] >= game.display_size[1] - 70:
+        atk.remove_count = 2
     for user in game.user_list[:]:
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
                 if user.hp <= 0:
                     game.user_list.remove(user)
-            atk.save_var['Ss1'] = -4
-            return True            
+            atk.remove_count = 2
+            return True
     return True
 
 def saw_attack_2(ch, game):
-    R = 4
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_m:
                 atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+0 , ch.pos[1]+250 ], saw_attack_move_2)
                 game.monster_attack.append(atk)
-                atk.save_var['Ss2'] = R
+                atk.remove_count = 3
+                atk.save_var['Ss2'] = random.randrange(1, 4)
 
 def saw_attack_move_2(atk, game):
-    atk.pos[0] -= atk.save_var['Ss2']
-    atk.pos[1] += atk.save_var['Ss2']
-    if atk.pos[0] <= 175 or atk.pos[1] <= 200:
+    if atk.remove_count == 3:
+        if atk.save_var['Ss2'] == 1:
+            atk.pos[0] -= 4
+            atk.pos[1] += 4
+        elif atk.save_var['Ss2'] == 2:
+            atk.pos[0] -= 4
+            atk.pos[1] += 2
+        elif atk.save_var['Ss2'] == 3:
+            atk.pos[0] -= 6
+            atk.pos[1] += 2
+    elif atk.remove_count == 2:
+        if atk.save_var['Ss2'] == 1:
+            atk.pos[0] += 4
+            atk.pos[1] -= 4
+        elif atk.save_var['Ss2'] == 2:
+            atk.pos[0] += 4
+            atk.pos[1] -= 2
+        elif atk.save_var['Ss2'] == 3:
+            atk.pos[0] += 6
+            atk.pos[1] -= 2
+    if atk.pos[0] >= 1000 or atk.pos[1] <= 200:
+        atk.remove_count = 3
         return False
-    if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
-        atk.save_var['Ss2'] = -4
+    if atk.pos[0] <= 0 or atk.pos[1] >= game.display_size[1] - 70:
+        atk.remove_count = 2
     for user in game.user_list[:]:
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
+            atk.remove_count = 2
             if user.name == "user":           
                 user.hp -= atk.damage
                 if user.hp <= 0:
                     game.user_list.remove(user)
-            atk.save_var['Ss2'] = -4
-            return True            
+            return True
     return True
 
 def laser_field1_start(ch, game):
