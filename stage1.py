@@ -227,7 +227,7 @@ def arm1_start(ch, game):
 
 def arm2_start(ch, game):
     ch.hp = 30
-    ch.pos = [ 700, 0 ]
+    ch.pos = [ 850, 0 ]
     ch.curr_state = 1
 
 def arm3_start(ch, game):
@@ -249,6 +249,10 @@ def arm6_start(ch, game):
     ch.hp = 30
     ch.pos = [ 995, 0 ]
     ch.curr_state = 1
+
+def fist_attack(ch, game):
+    
+    pass
 
 
 def forceps_attack_1(ch, game):
