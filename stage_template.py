@@ -98,6 +98,7 @@ class Character:
         self.move_factor_x = 0
         self.move_factor_y = 0
         self.hp = 0
+        self.laser_status = False
 
     def pos_init(self, curr_stage):
         if self.positioning != None:
