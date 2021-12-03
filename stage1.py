@@ -359,13 +359,24 @@ def saw_attack_move_2(atk, game):
     return True
 
 def laser_field1_start(ch, game):
-    ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1] ]
-
+    ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1]]
+    
+def laser_field1_attack(ch , game):
+    if ch.laser_status == False:
+        game.monster_attack.append(stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], ch.pos.copy(), None))
+        ch.laser_status = True
+    
 
 def laser_field2_start(ch, game):
     ch.pos = [ game.display_size[0] - ch.size[ch.curr_state][0], game.display_size[1] - ch.size[ch.curr_state][1] ]
 
+def laser_field2_attack(atk , game):
+    pass
 
+def laser_attack_attack(atk, game): 
+    for event in game.event_key:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_v:
+            atk.pos[1] = 300
 
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
@@ -396,28 +407,28 @@ def stage1(name, path, fps, speed):
     have_next = stage1_1.run()
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
-    def laser_waring_start(ch, game):
+    #def laser_waring_start(ch, game):
         #X = 0
-        ch.pos = [ 600, 300]
+        #ch.pos = [ 600, 300]
 
-    def laser_waring_start1(ch, game):
+    #def laser_waring_start1(ch, game):
         #X = 0
-        ch.pos = [ -50, 600]
+        #ch.pos = [ -50, 600]
 
-    def laser_attack_start(ch, game):
+    #def laser_attack_start(ch, game):
         #X = 0
-        ch.pos = [ 500, 300]
+        #ch.pos = [ 500, 300]
     
-    def laser_attack1_start(ch, game):
-        ch.pos = [0, 300]    
+    #def laser_attack1_start(ch, game):
+        #ch.pos = [0, 300]    
 
     ch_info_list = ["user", "boss", 
-                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, None, None ], None, 1),
-                     ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, None, None ], None, 1),
-                     ("laser_attack", ["/image/laser_attack.png"], [None, laser_attack_start, None, None], None, 1),
-                     ("laser_attack1", ["/image/laser_attack1.png"],[None, laser_attack1_start, None, None], None, 1),
-                     ("laser_waring", ["/image/waring.png"], [None, laser_waring_start, None, None], None, 1),
-                     ("laser_waring1", ["/image/waring3.png"], [None, laser_waring_start1, None, None], None, 1)]
+                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, laser_field1_attack, None ], None, 1),
+                     ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, laser_field2_attack, None ], None, 1),
+                     ("laser_attack", ["/image/laser_attack.png"], [None, None, laser_attack_attack, None], None, 1),
+                     ("laser_attack1", ["/image/laser_attack1.png"],[None, None, None, None], None, None),
+                     ("laser_waring", ["/image/waring.png"], [None, None, None, None], None, None),
+                     ("laser_waring1", ["/image/waring3.png"], [None, None, None, None], None, None)]
 
     if have_next:    
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
