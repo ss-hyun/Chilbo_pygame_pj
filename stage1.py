@@ -31,25 +31,26 @@ def move_user(ch, game):
     key_up = False
   
     for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-
-            ch.move_state = True
+        if event.type == pygame.KEYDOWN:            
                                     
             if event.key == pygame.K_LEFT:
-              ch.move_factor_x = -speed            
-              ch.curr_state = 6
-                  
+                ch.move_state = True
+                ch.move_factor_x = -speed            
+                ch.curr_state = 6        
+
             elif event.key == pygame.K_RIGHT:
-              ch.move_factor_x = speed              
-              ch.curr_state = 4
+                ch.move_state = True
+                ch.move_factor_x = speed              
+                ch.curr_state = 4
 
             elif event.key == pygame.K_UP:
-              key_up = True
-              ch.move_factor_y = -speed              
-              ch.curr_state = 10         
+                ch.move_state = True
+                key_up = True
+                ch.move_factor_y = -speed              
+                ch.curr_state = 10         
                            
             elif event.key == pygame.K_DOWN:
-                
+                ch.move_state = True                
                 ch.move_factor_y = speed            
                 ch.curr_state = 8
 
@@ -91,6 +92,8 @@ def user_start(ch, game):
         ch.hp = 100 #유저 체력        
     if game.stage_number == 2:
         ch.hp + 50 <= 100
+    
+    
 
 def user_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
@@ -100,7 +103,8 @@ def user_resize(ch):
         # size variable change
         ch.size[i] = ch.image[i].get_rect().size
 
-def user_attack(ch, game): 
+def user_attack(ch, game):
+
     for event in game.event_key:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
             game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), user_atk_move))
@@ -363,8 +367,17 @@ def laser_field1_start(ch, game):
     
 def laser_field1_attack(ch , game):
     if ch.laser_status == False:
-        game.monster_attack.append(stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], ch.pos.copy(), None))
+        game.monster_attack.append(stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], ch.pos.copy(), None))             
         ch.laser_status = True
+    for user in game.user_list[:]:
+            if user.pos[0] <= ch.pos[0] +200 and user.pos[1] <= ch.pos[1] +400:
+                if user.name == "user":
+                    user.hp -= ch.atk_list[0][1]
+                    if user.hp <= 0:
+                        game.user_list.remove(user)                        
+    return False
+
+
     
 
 def laser_field2_start(ch, game):
@@ -385,8 +398,9 @@ def stage1(name, path, fps, speed):
     user_atk_info = [ [ "/image/bullet.png", 1, 9 ] ] 
     forceps_atk_info = [ ["/image/gugu.png", 5, 10] ]
     saw_atk_info = [ ["/image/sawsaw.png", 10, 10] ]
+    laser_atk_info = [["/image/laser_field.png", 1 , 10]]
 
-    # character info : (name, relative path list, function list, attack image path, attack info list, group)
+    # character info : (name, relative path list, function list, attack info list, group)
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
     # # function list : A function of all actions that can be done as a character, including initialization.
@@ -423,7 +437,7 @@ def stage1(name, path, fps, speed):
         #ch.pos = [0, 300]    
 
     ch_info_list = ["user", "boss", 
-                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, laser_field1_attack, None ], None, 1),
+                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, laser_field1_attack, None ], laser_atk_info, 1),
                      ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, laser_field2_attack, None ], None, 1),
                      ("laser_attack", ["/image/laser_attack.png"], [None, None, laser_attack_attack, None], None, 1),
                      ("laser_attack1", ["/image/laser_attack1.png"],[None, None, None, None], None, None),

@@ -7,7 +7,7 @@ import stage1
 pygame.init
 
 # loading 
-path = os.path.dirname(os.path.realpath(__file__))
+path = os.path.dirname(os.path.realpath(__file__))  
 gname_image = pygame.image.load(path + "/image/start_gname.jpg")
 bg_image = pygame.image.load(path + "/image/start_background.jpg")
 bt_image_st1_up = pygame.image.load(path + "/image/start_button_stage1_up.jpg")
