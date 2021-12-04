@@ -127,20 +127,7 @@ def user_attack(ch, game):
 
                                                  
 def user_atk_move(atk, game):    
-    for user in game.user_list[:]:      
-        if user.curr_state == 0 or user.curr_state == 4 or user.curr_state == 5:
-            atk.pos[0] +=6
-            
-        if user.curr_state == 1 or user.curr_state == 6 or user.curr_state == 7:
-            atk.pos[0] -= 6
-                
-        if user.curr_state == 3 or user.curr_state == 10 or user.curr_state == 11:
-            atk.pos[1] -= 6
-               
-        if user.curr_state == 2 or user.curr_state == 8 or user.curr_state == 9:
-            atk.pos[1] += 6
-               
-    #atk.pos[1] -= 6
+    atk.pos[1] -= 6
 
     for monster in game.monster_list[:]:
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
@@ -520,7 +507,6 @@ def stage1(name, path, fps, speed):
     laser_atk_info = [ [ "/image/laser_field.png", 1 , 10, None ] ]
 
 
-
     # character info : (name, relative path list, function list, attack info list, group)
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
@@ -541,7 +527,6 @@ def stage1(name, path, fps, speed):
     stage1_1 = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
     have_next = stage1_1.run()
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
-
     def laser_waring_start(ch, game):
         #X = 0
         ch.pos = [ 500, 300 ]
