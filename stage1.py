@@ -507,7 +507,7 @@ def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
     # attack info : ( image path, damage, range, sound )
-    user_atk_info = [ [ "/image/bullet.png", 123, 9, None ] ] 
+    user_atk_info = [ [ "/image/bullet.png", 1, 9, None ] ] 
     fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
     forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
     saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]
