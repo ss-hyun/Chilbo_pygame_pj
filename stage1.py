@@ -96,6 +96,7 @@ def user_start(ch, game):
         elif ch.hp < 50 and ch.hp > 0:
             ch.hp += 50 
         print(ch.hp)
+        ch.hp + 50 <= 100
     
 def user_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
@@ -120,21 +121,25 @@ def user_attack(ch, game):
                 user_attack_pos[0] += 120
                 user_attack_pos[1] += 50
             if ch.curr_state == 2 or ch.curr_state == 8 or ch.curr_state == 9:
-               user_attack_pos[1] += 50     
-           
+               user_attack_pos[1] += 50                 
             game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], user_attack_pos, user_atk_move))
-                      
-def user_atk_move(atk, game):
-    #for user in game.user_list[:]:
-        #if user.curr_state == 0 or user.curr_state == 4 or user.curr_state == 5:
-            #atk.pos[0] += 6
-        #elif user.curr_state == 1 or user.curr_state == 6 or user.curr_state == 7:
-            #atk.pos[0] -= 6
-        #elif user.curr_state == 3 or user.curr_state == 10 or user.curr_state == 11:
-            #atk.pos[1] -= 6
-        #else user.curr_state == 2 or user.curr_state == 9 or user.curr_state == 8:
-            #atk.pos[1] += 6
-    atk.pos[1] -= 6
+
+                                                 
+def user_atk_move(atk, game):    
+    for user in game.user_list[:]:      
+        if user.curr_state == 0 or user.curr_state == 4 or user.curr_state == 5:
+            atk.pos[0] +=6
+            
+        if user.curr_state == 1 or user.curr_state == 6 or user.curr_state == 7:
+            atk.pos[0] -= 6
+                
+        if user.curr_state == 3 or user.curr_state == 10 or user.curr_state == 11:
+            atk.pos[1] -= 6
+               
+        if user.curr_state == 2 or user.curr_state == 8 or user.curr_state == 9:
+            atk.pos[1] += 6
+               
+    #atk.pos[1] -= 6
 
     for monster in game.monster_list[:]:
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
@@ -521,7 +526,7 @@ def stage1(name, path, fps, speed):
     # #                 [move, positioning, attack, image transform] - if it doesn't exist -> None
     # # group : There are user groups(0) and monster groups(1) in the game.
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, user_attack, user_resize ], user_atk_info, 0),
-                     ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
+                     ("boss", [ "/image/exboss1.png" ], [ None, boss_start, None, boss_resize ], None, 1),                    
 
                      ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, arm_atk_fist_1, arm_trans ], fist_atk_info, 1),
                      ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, arm_atk_fist_2, arm_trans ], fist_atk_info, 1),
