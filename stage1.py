@@ -517,7 +517,7 @@ def stage1(name, path, fps, speed):
     fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
     forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
     saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]
-    laser_atk_info = [ [ "/image/laser_field.png", 1 , 10, None ] ]
+    laser_atk_info = [ [ "/image/laser_attack.png", 1 , 10, None ] ]
 
 
 
