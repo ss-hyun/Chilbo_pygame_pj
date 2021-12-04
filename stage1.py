@@ -139,6 +139,8 @@ def user_atk_move(atk, game):
                 monster.hp -= atk.damage
                 if monster.hp <= 0:
                     game.monster_list.remove(monster)
+                    game.next_stage = True
+                    game.frame.running = False
             return False 
     return True 
     
@@ -614,7 +616,10 @@ def stage1(name, path, fps, speed):
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
         have_next = stage1_2.run()
 
+
+    bg_image = pygame.image.load(path + "/image/ending.jpg")
+
     if have_next:
-        stage_end = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
+        stage_end = stage_template.Stage(name, 2, path, fps, speed, bg_image, None)
         stage_end.run()
 
