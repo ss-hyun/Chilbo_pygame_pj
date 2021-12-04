@@ -572,4 +572,8 @@ def stage1(name, path, fps, speed):
 
     if have_next:    
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
-        stage1_2.run()
+        have_next = stage1_2.run()
+
+    if have_next:
+        stage_end = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
+        stage_end.run()
