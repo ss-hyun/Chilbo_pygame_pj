@@ -130,6 +130,8 @@ def user_atk_move(atk, game):
     atk.pos[1] -= 6
 
     for monster in game.monster_list[:]:
+        if monster.name == "laser_waring" or monster.name == "laser_waring1" or monster.name == "laser_field1" or monster.name == "laser_field2":
+            break
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
             if monster.name != "boss" and game.stage_number == 1:      
                 monster.hp -= atk.damage
@@ -471,6 +473,8 @@ def saw_attack_move_2(atk, game):
             return True
     return True
 
+
+
 def laser_field1_start(ch, game):
     ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1]]
     
@@ -485,9 +489,6 @@ def laser_field1_attack(ch , game):
                     if user.hp <= 0:
                         game.user_list.remove(user)                        
     return False
-
-
-    
 
 def laser_field2_start(ch, game):
     ch.pos = [ game.display_size[0] - ch.size[ch.curr_state][0], game.display_size[1] - ch.size[ch.curr_state][1] ]
@@ -532,6 +533,7 @@ def stage1(name, path, fps, speed):
     stage1_1 = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
     have_next = stage1_1.run()
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
+
     def laser_waring_start(ch, game):
         #X = 0
         ch.pos = [ 500, 300 ]
@@ -539,23 +541,23 @@ def stage1(name, path, fps, speed):
     def laser_waring_move(ch, game):
         i = random.randrange(200, 900)
         ch.change_count += 1
-        ch.state_change_speed = 120
-        if ch.change_count == 120:
+        ch.state_change_speed = 160
+        if ch.change_count == 160:
             ch.change_count = 0
         elif ch.change_count == 1:
             ch.pos[0] = i
-        elif ch.change_count == 81:
+        elif ch.change_count == 121:
             ch.pos[0] = 1500
 
     def laser_attack(ch, game):
-        if ch.change_count == 80:
+        if ch.change_count == 120:
             atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), laser_attack_move)
             game.monster_attack.append(atk)
             atk.save_var['ch'] = ch
 
     def laser_attack_move(atk, game):
         ch = atk.save_var['ch']
-        if ch.change_count >= 80 and ch.change_count <= 100:
+        if ch.change_count >= 120 and ch.change_count <= 140:
             atk.range = ch.size[ch.curr_state]
             for user in game.user_list[:]:
                 if user.pos[0] > atk.pos[0] + atk.range[0] or user.pos[0] + user.size[user.curr_state][0] < atk.pos[0] or user.pos[1] > atk.pos[1] + atk.range[1] or user.pos[1] + user.size[user.curr_state][1] < atk.pos[1]: continue
@@ -573,23 +575,23 @@ def stage1(name, path, fps, speed):
     def laser_waring_move1(ch, game):
         i = random.randrange(300, 600)
         ch.change_count += 1
-        ch.state_change_speed = 120
-        if ch.change_count == 120:
+        ch.state_change_speed = 160
+        if ch.change_count == 160:
             ch.change_count = 0
         elif ch.change_count == 1:
             ch.pos[1] = i
-        elif ch.change_count == 81:
+        elif ch.change_count == 121:
             ch.pos[1] = 1500
 
     def laser_attack1(ch, game):
-        if ch.change_count == 80:
+        if ch.change_count == 120:
             atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), laser_attack_move1)
             game.monster_attack.append(atk)
             atk.save_var['ch'] = ch
 
     def laser_attack_move1(atk, game):
         ch = atk.save_var['ch']
-        if ch.change_count >= 80 and ch.change_count <= 100:
+        if ch.change_count >= 120 and ch.change_count <= 140:
             atk.range = ch.size[ch.curr_state]
             for user in game.user_list[:]:
                 if user.pos[0] > atk.pos[0] + atk.range[0] or user.pos[0] + user.size[user.curr_state][0] < atk.pos[0] or user.pos[1] > atk.pos[1] + atk.range[1] or user.pos[1] + user.size[user.curr_state][1] < atk.pos[1]: continue
