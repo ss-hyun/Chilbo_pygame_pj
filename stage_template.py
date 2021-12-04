@@ -2,6 +2,7 @@ import sys
 import pygame
 from pygame.constants import K_TAB
 import button
+import time
 
 class Stage_frame:
     def __init__(self, name, path, button_pos):
@@ -152,6 +153,7 @@ class Stage:
         self.event_key = []
         self.user_attack = []
         self.monster_attack = []
+        self.next_stage = False
 
     def run(self):
         background = pygame.display.set_mode(self.display_size)
@@ -159,8 +161,6 @@ class Stage:
             c.pos_init(self)
         for c in self.monster_list:
             c.pos_init(self)
-        
-        next_stage = False
         
         while self.frame.running:
             pygame.display.set_caption(self.frame.name)
@@ -172,14 +172,12 @@ class Stage:
                 elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                     self.event_mouse.append(pygame.mouse.get_pos())
                     for b in self.frame.button:
-                        b.click()                
-                elif len(self.monster_list) == 1:
-                    self.frame.running = False
-                    next_stage = True
-                    break
+                        b.click()
                 self.event_key.append(event)
             if self.frame.pause:
-                continue
+                continue                
+            
+            if self.next_stage: break
             
             background.blit(self.bg_image, (0, 0))
             
@@ -209,5 +207,7 @@ class Stage:
             pygame.display.update()
             self.event_mouse.clear()
             self.event_key.clear()
+            if self.stage_number == 3:
+                time.sleep(5)
             
-        return next_stage
+        return self.next_stage
