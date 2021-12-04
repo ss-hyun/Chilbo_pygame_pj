@@ -510,8 +510,8 @@ def stage1(name, path, fps, speed):
     fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
     forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
     saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]
-    laser_atk_info = [ [ "/image/laser_attack.png", 10 , 10, None ] ]
-    laser1_atk_info = [ [ "/image/laser_attack1.png", 10 , 10, None ] ]
+    laser_atk_info = [ [ "/image/laser_attack.png", 0.5 , 10, None ] ]
+    laser1_atk_info = [ [ "/image/laser_attack1.png", 0.5 , 10, None ] ]
 
 
     # character info : (name, relative path list, function list, attack info list, group)
@@ -539,13 +539,11 @@ def stage1(name, path, fps, speed):
         ch.pos = [ 500, 300 ]
 
     def laser_waring_move(ch, game):
-        i = random.randrange(300, 801)
+        i = random.randrange(200, 900)
         ch.change_count += 1
-        print(ch.change_count)
         ch.state_change_speed = 120
         if ch.change_count == 120:
             ch.change_count = 0
-            print(i)
         elif ch.change_count == 1:
             ch.pos[0] = i
         elif ch.change_count == 81:
@@ -564,6 +562,7 @@ def stage1(name, path, fps, speed):
             for user in game.user_list[:]:
                 if user.pos[0] > atk.pos[0] + atk.range[0] or user.pos[0] + user.size[user.curr_state][0] < atk.pos[0] or user.pos[1] > atk.pos[1] + atk.range[1] or user.pos[1] + user.size[user.curr_state][1] < atk.pos[1]: continue
                 user.hp -= atk.damage
+                print(user.hp)
                 if user.hp <= 0: game.user_list.remove(user)
         if ch.change_count == 1:
             return False
@@ -571,16 +570,14 @@ def stage1(name, path, fps, speed):
 
     def laser_waring_start1(ch, game):
         #X = 0
-        ch.pos = [ 500, 300 ]
+        ch.pos = [ 0, 300 ]
 
     def laser_waring_move1(ch, game):
-        i = random.randrange(300, 800)
+        i = random.randrange(300, 600)
         ch.change_count += 1
-        print(ch.change_count)
         ch.state_change_speed = 120
         if ch.change_count == 120:
             ch.change_count = 0
-            print(i)
         elif ch.change_count == 1:
             ch.pos[1] = i
         elif ch.change_count == 81:
@@ -599,6 +596,7 @@ def stage1(name, path, fps, speed):
             for user in game.user_list[:]:
                 if user.pos[0] > atk.pos[0] + atk.range[0] or user.pos[0] + user.size[user.curr_state][0] < atk.pos[0] or user.pos[1] > atk.pos[1] + atk.range[1] or user.pos[1] + user.size[user.curr_state][1] < atk.pos[1]: continue
                 user.hp -= atk.damage
+                print(user.hp)
                 if user.hp <= 0: game.user_list.remove(user)
         if ch.change_count == 1:
             return False
