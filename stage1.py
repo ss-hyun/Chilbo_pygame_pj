@@ -14,7 +14,7 @@ def move_user(ch, game):
     if ch.pos[1] < 208:
         ch.pos[1] = 208
     if ch.pos[1] > 620:
-         ch.pos[1] = 620
+        ch.pos[1] = 620
     if ch.pos[0] < 8.5:
         ch.pos[0] = 8.5
     if ch.pos[0] > 1130:
@@ -93,6 +93,7 @@ def user_start(ch, game):
         ch.hp = 100 #유저 체력        
         print(ch.hp)
     if game.stage_number == 2:
+<<<<<<< Updated upstream
         if ch.hp <= 100 and ch.hp >= 50:
             ch.hp = 100
         elif ch.hp < 50 and ch.hp > 0:
@@ -100,6 +101,10 @@ def user_start(ch, game):
         print(ch.hp)
 
 
+=======
+        ch.hp + 50 <= 100
+    
+>>>>>>> Stashed changes
 def user_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
     l = len(ch.image)
@@ -111,9 +116,21 @@ def user_resize(ch):
 def user_attack(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+<<<<<<< Updated upstream
             game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), user_atk_move))
                 
 
+=======
+            #for user in game.user_list[:]:
+<<<<<<< Updated upstream
+                #user.pos[user.curr_state]
+            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy()+338, user_atk_move))
+=======
+                pos = ch.pos.copy() + 388
+                game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], pos, user_atk_move))
+>>>>>>> Stashed changes
+                                    
+>>>>>>> Stashed changes
 def user_atk_move(atk, game):
     atk.pos[1] -= 6
     for monster in game.monster_list[:]:
@@ -303,9 +320,17 @@ def forceps_attack_move_1(atk, game):
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
+<<<<<<< Updated upstream
                 if user.hp <= 0:
                     game.user_list.remove(user)
             return False 
+=======
+                if user.hp <= 0: game.user_list.remove(user)
+            return False 
+    # if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
+    #     return False
+    # print(atk.save_var['d1'])
+>>>>>>> Stashed changes
     return True
 
 def forceps_attack_2(ch, game):
