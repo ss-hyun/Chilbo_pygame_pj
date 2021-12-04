@@ -478,24 +478,37 @@ def saw_attack_move_2(atk, game):
 
 def laser_field1_start(ch, game):
     ch.pos = [ 0, game.display_size[1] - ch.size[ch.curr_state][1]]
-    
-def laser_field1_attack(ch , game):
-    if ch.laser_status == False:
-        game.monster_attack.append(stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], ch.pos.copy(), None))             
-        ch.laser_status = True
+    atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), laser_field1_attack_attack)
+    game.monster_attack.append(atk)
+    atk.save_var['ch'] = ch
+
+def laser_field1_attack_attack(atk, game):
+    ch = atk.save_var['ch']
+    atk.range = ch.size[ch.curr_state]
     for user in game.user_list[:]:
-            if user.pos[0] <= ch.pos[0] +200 and user.pos[1] <= ch.pos[1] +400:
-                if user.name == "user":
-                    user.hp -= ch.atk_list[0][1]
-                    if user.hp <= 0:
-                        game.user_list.remove(user)                        
-    return False
+        if user.pos[0] > atk.pos[0] + atk.range[0]: continue
+        user.hp -= atk.damage
+        print(user.hp)
+        if user.hp <= 0: game.user_list.remove(user)
+        return True                  
+    return True
 
 def laser_field2_start(ch, game):
     ch.pos = [ game.display_size[0] - ch.size[ch.curr_state][0], game.display_size[1] - ch.size[ch.curr_state][1] ]
+    atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), laser_field2_attack_attack)
+    game.monster_attack.append(atk)
+    atk.save_var['ch'] = ch
 
-def laser_field2_attack(atk , game):
-    pass
+def laser_field2_attack_attack(atk, game):
+    ch = atk.save_var['ch']
+    atk.range = ch.size[ch.curr_state]
+    for user in game.user_list[:]:
+        if user.pos[0] + user.size[user.curr_state][0] < atk.pos[0]: continue
+        user.hp -= atk.damage
+        print(user.hp)
+        if user.hp <= 0: game.user_list.remove(user)
+        return True                  
+    return True
 
 def laser_attack_attack(atk, game): 
     for event in game.event_key:
@@ -505,13 +518,11 @@ def laser_attack_attack(atk, game):
 def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
-    # attack info : ( image path, damage, range )
+    # attack info : ( image path, damage, range, sound )
     user_atk_info = [ [ "/image/bullet.png", 123, 9, None ] ] 
     fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
     forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
     saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]
-    laser_atk_info = [ [ "/image/laser_attack.png", 0.5 , 10, None ] ]
-    laser1_atk_info = [ [ "/image/laser_attack1.png", 0.5 , 10, None ] ]
 
 
     # character info : (name, relative path list, function list, attack info list, group)
@@ -605,11 +616,15 @@ def stage1(name, path, fps, speed):
             return False
         return True
 
-    
+
+    # attack info : ( image path, damage, range, sound )
+    laser_atk_info = [ [ "/image/laser_attack.png", 0.5 , 10, None ] ]
+    laser1_atk_info = [ [ "/image/laser_attack1.png", 0.5 , 10, None ] ]
+    laser_field_atk_info = [ [ None, 5, None, None ] ]
 
     ch_info_list = ["user", "boss", 
-                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, None, None ], None, 1),
-                     ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, None, None ], None, 1),
+                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, None, None ], laser_field_atk_info, 1),
+                     ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, None, None ], laser_field_atk_info, 1),
                      ("laser_waring", ["/image/waring.png"], [laser_waring_move, laser_waring_start, laser_attack, None], laser_atk_info, 1),
                      ("laser_waring1", ["/image/waring3.png"], [laser_waring_move1, laser_waring_start1, laser_attack1, None], laser1_atk_info, 1)]
 
