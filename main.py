@@ -9,10 +9,10 @@ pygame.mixer.init()
 
 # loading 
 path = os.path.dirname(os.path.realpath(__file__))  
-gname_image = pygame.image.load(path + "/image/start_gname.jpg")
+gname_image = pygame.image.load(path + "/image/gamelogo.png")
 bg_image = pygame.image.load(path + "/image/start_background.jpg")
-bt_image_st1_up = pygame.image.load(path + "/image/start_button_stage1_up.jpg")
-bt_image_st1_down = pygame.image.load(path + "/image/start_button_stage1_down.jpg")
+bt_image_st1_up = pygame.image.load(path + "/image/start_button_stage1_up.png")
+bt_image_st1_down = pygame.image.load(path + "/image/start_button_stage1_down.png")
 
 # setting
 display_size = bg_image.get_rect().size
