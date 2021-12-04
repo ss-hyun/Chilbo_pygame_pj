@@ -184,16 +184,14 @@ def arm_move_fist_1(ch, game):
         ch.curr_state += 1 if ch.change_direc else -1
     
 def arm_atk_fist_1(ch, game):
-    for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RCTRL:
-                ch.change_count= 0                
-                ch.curr_state = 3
-                ch.change_direc = True
-                atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], 
-                                                                ch.pos.copy(), fist_atk_move, ch.atk_list[0][3])
-                game.monster_attack.append(atk)
-                atk.save_var['ch'] = ch
+        if ch.curr_state < 3 and random.randrange(1, 200) == 4:
+            ch.change_count= 0                
+            ch.curr_state = 3
+            ch.change_direc = True
+            atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], 
+                                                            ch.pos.copy(), fist_atk_move, ch.atk_list[0][3])
+            game.monster_attack.append(atk)
+            atk.save_var['ch'] = ch
 
 
 def arm_move_fist_2(ch, game):
@@ -206,16 +204,14 @@ def arm_move_fist_2(ch, game):
         ch.curr_state += 1 if ch.change_direc else -1
     
 def arm_atk_fist_2(ch, game):    
-    for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LCTRL:
-                ch.change_count= 0                
-                ch.curr_state = 3
-                ch.change_direc = True
-                atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], 
-                                                                ch.pos.copy(), fist_atk_move, ch.atk_list[0][3])
-                game.monster_attack.append(atk)
-                atk.save_var['ch'] = ch
+    if ch.curr_state < 3 and random.randrange(1, 200) == 4:
+        ch.change_count= 0                
+        ch.curr_state = 3
+        ch.change_direc = True
+        atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], 
+                                                        ch.pos.copy(), fist_atk_move, ch.atk_list[0][3])
+        game.monster_attack.append(atk)
+        atk.save_var['ch'] = ch
 
 def arm_move_forceps(ch, game):
     ch.change_count += 1
@@ -300,13 +296,11 @@ def fist_atk_move(atk, game):
     return False
 
 def forceps_attack_1(ch, game):
-    for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_z:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], 
-                                                        [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
-                game.monster_attack.append(atk)
-                atk.save_var['d1'] = random.randrange(1, 4)
+    if random.randrange(1, 175) == 4:
+        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], 
+                                                [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
+        game.monster_attack.append(atk)
+        atk.save_var['d1'] = random.randrange(1, 4) 
 
 def forceps_attack_move_1(atk, game):
     if atk.save_var['d1'] == 1:
@@ -331,12 +325,10 @@ def forceps_attack_move_1(atk, game):
     return True
 
 def forceps_attack_2(ch, game):
-    for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_x:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+200 ], forceps_attack_move_2)
-                game.monster_attack.append(atk)
-                atk.save_var['d2'] = random.randrange(1, 4)
+    if random.randrange(1, 175) == 4:
+        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+200 ], forceps_attack_move_2)
+        game.monster_attack.append(atk)
+        atk.save_var['d2'] = random.randrange(1, 4)
 
 def forceps_attack_move_2(atk, game):
     if atk.save_var['d2'] == 1:
@@ -360,14 +352,12 @@ def forceps_attack_move_2(atk, game):
 
 def saw_attack_1(ch, game):
     l = 3
-    for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_n:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+250 ], saw_attack_move_1)
-                game.monster_attack.append(atk)
-                atk.remove_count == 3
-                atk.save_var['Ss1'] = random.randrange(1, 4)
-                atk.save_var['Sscount1'] = l
+    if random.randrange(1, 200) == 4:
+        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+250 ], saw_attack_move_1)
+        game.monster_attack.append(atk)
+        atk.remove_count == 3
+        atk.save_var['Ss1'] = random.randrange(1, 4)
+        atk.save_var['Sscount1'] = l
 
 def saw_attack_move_1(atk, game):
     if atk.remove_count == 3:
@@ -418,14 +408,12 @@ def saw_attack_move_1(atk, game):
 
 def saw_attack_2(ch, game):
     l = 3
-    for event in game.event_key:
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_m:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+0 , ch.pos[1]+250 ], saw_attack_move_2)
-                game.monster_attack.append(atk)
-                atk.remove_count = 3
-                atk.save_var['Ss2'] = random.randrange(1, 4)
-                atk.save_var['Sscount2'] = l
+    if random.randrange(1, 200) == 4:
+        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+0 , ch.pos[1]+250 ], saw_attack_move_2)
+        game.monster_attack.append(atk)
+        atk.remove_count = 3
+        atk.save_var['Ss2'] = random.randrange(1, 4)
+        atk.save_var['Sscount2'] = l
 
 def saw_attack_move_2(atk, game):
     if atk.remove_count == 3:
