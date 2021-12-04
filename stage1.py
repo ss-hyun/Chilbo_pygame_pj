@@ -3,6 +3,7 @@ import pygame
 from pygame.constants import KEYUP
 import stage_template
 import random
+import time
 
 
 
@@ -519,6 +520,7 @@ def stage1(name, path, fps, speed):
     laser_atk_info = [ [ "/image/laser_field.png", 1 , 10, None ] ]
 
 
+
     # character info : (name, relative path list, function list, attack info list, group)
     # # name : character name
     # # relative path list : Characters have various states. Images of all possible conditions.
@@ -540,28 +542,48 @@ def stage1(name, path, fps, speed):
     have_next = stage1_1.run()
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
-    #def laser_waring_start(ch, game):
+    def laser_waring_start(ch, game):
         #X = 0
-        #ch.pos = [ 600, 300]
+        ch.pos = [ 500, 300 ]
 
-    #def laser_waring_start1(ch, game):
-        #X = 0
-        #ch.pos = [ -50, 600]
+    def laser_waring_move(ch, game):
+        i = random.randrange(300, 801)
+        ch.change_count += 1
+        print(ch.change_count)
+        ch.state_change_speed = 120
+        if ch.change_count == 120:
+            ch.change_count = 0
+            print(i)
+        elif ch.change_count == 1:
+            ch.pos[0] = i
+        elif ch.change_count == 81:
+            ch.pos[0] = 1500
 
-    #def laser_attack_start(ch, game):
-        #X = 0
-        #ch.pos = [ 500, 300]
-    
-    #def laser_attack1_start(ch, game):
-        #ch.pos = [0, 300]    
+    def laser_attack(ch, game):
+        if ch.change_count == 80:
+            atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), laser_attack_move)
+            game.monster_attack.append(atk)
+            atk.save_var['ch'] = ch
+
+    def laser_attack_move(atk, game):
+        ch = atk.save_var['ch']
+        if ch.change_count >= 80 and ch.change_count <= 100:
+            atk.range = ch.size[ch.curr_state]
+            for user in game.user_list[:]:
+                if user.pos[0] > atk.pos[0] + atk.range[0] or user.pos[0] + user.size[user.curr_state][0] < atk.pos[0] or user.pos[1] > atk.pos[1] + atk.range[1] or user.pos[1] + user.size[user.curr_state][1] < atk.pos[1]: continue
+                user.hp -= atk.damage
+                if user.hp <= 0: game.user_list.remove(user)
+        if ch.change_count == 1:
+            return False
+        return True
+
+
 
     ch_info_list = ["user", "boss", 
-                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, laser_field1_attack, None ], laser_atk_info, 1),
-                     ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, laser_field2_attack, None ], None, 1),
-                     ("laser_attack", ["/image/laser_attack.png"], [None, None, laser_attack_attack, None], None, 1),
-                     ("laser_attack1", ["/image/laser_attack1.png"],[None, None, None, None], None, None),
-                     ("laser_waring", ["/image/waring.png"], [None, None, None, None], None, None),
-                     ("laser_waring1", ["/image/waring3.png"], [None, None, None, None], None, None)]
+                     ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, None, None ], None, 1),
+                     ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, None, None ], None, 1),
+                     ("laser_waring", ["/image/waring.png"], [laser_waring_move, laser_waring_start, laser_attack, None], laser_atk_info, 1),
+                     ("laser_waring1", ["/image/waring3.png"], [None, None, None, None], None, 1)]
 
     if have_next:    
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)

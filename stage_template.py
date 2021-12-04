@@ -44,7 +44,7 @@ class Spherical_Attack:
     def move(self, curr_stage):
         if self.atk_mv_action != None:
             return self.atk_mv_action(self, curr_stage)
-        
+
 # 사각형 형태의 공격
 class Rectangle_Attack:
     def __init__(self, image, damage, range, pos, atk_move, sound = None):
@@ -101,6 +101,7 @@ class Character:
         self.move_factor_y = 0
         self.hp = 0
         self.laser_status = False
+        self.save_var = {}
 
     def pos_init(self, curr_stage):
         if self.positioning != None:
@@ -171,7 +172,7 @@ class Stage:
                 elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                     self.event_mouse.append(pygame.mouse.get_pos())
                     for b in self.frame.button:
-                        b.click()
+                        b.click()                
                 elif len(self.monster_list) == 1:
                     self.frame.running = False
                     next_stage = True
