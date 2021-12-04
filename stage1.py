@@ -386,7 +386,7 @@ def saw_attack_move_1(atk, game):
     if atk.pos[0] >= game.display_size[0] - 70 or atk.pos[1] >= game.display_size[1] - 70:
         atk.remove_count = 2
     for user in game.user_list[:]:
-        if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
+        if user.pos[1] < atk.pos[1] + 37 and atk.pos[1] + 37 <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] + 37 and atk.pos[0] + 37 <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user" and atk.remove_count == 2:
                 atk.save_var['Sscount1'] -= 1
                 if atk.save_var['Sscount1'] == 0:
@@ -407,7 +407,7 @@ def saw_attack_move_1(atk, game):
     return True
 
 def saw_attack_2(ch, game):
-    l = 3
+    l = 10
     if random.randrange(1, 200) == 4:
         atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+0 , ch.pos[1]+250 ], saw_attack_move_2)
         game.monster_attack.append(atk)
@@ -442,7 +442,7 @@ def saw_attack_move_2(atk, game):
     if atk.pos[0] <= 0 or atk.pos[1] >= game.display_size[1] - 70:
         atk.remove_count = 2
     for user in game.user_list[:]:
-        if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
+        if user.pos[1] < atk.pos[1] + 37 and atk.pos[1] + 37 <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] + 37 and atk.pos[0] + 37 <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user" and atk.remove_count == 2:
                 atk.save_var['Sscount2'] -= 1
                 if atk.save_var['Sscount2'] == 0:
