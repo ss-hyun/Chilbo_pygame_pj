@@ -531,8 +531,10 @@ def stage1(name, path, fps, speed):
                      ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2.png", "/image/r_saw2.png" ], [ arm_move_saw, arm6_start, saw_attack_2, arm_trans ], saw_atk_info, 1),
                     ]
 
+    
     stage1_1 = stage_template.Stage(name, 1, path, fps, speed, bg_image, ch_info_list)
     have_next = stage1_1.run()
+        
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
     def laser_waring_start(ch, game):
@@ -603,7 +605,7 @@ def stage1(name, path, fps, speed):
             return False
         return True
 
-
+    
 
     ch_info_list = ["user", "boss", 
                      ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, None, None ], None, 1),

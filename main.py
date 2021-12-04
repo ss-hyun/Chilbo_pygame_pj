@@ -16,7 +16,7 @@ bt_image_st1_down = pygame.image.load(path + "/image/start_button_stage1_down.pn
 
 # setting
 display_size = bg_image.get_rect().size
-name = "GUN KID"
+name = "game"
 speed = 100
 running = True
 gname_pos = ((display_size[0]-gname_image.get_rect().size[0])/2, (display_size[1]-gname_image.get_rect().size[1])/2)

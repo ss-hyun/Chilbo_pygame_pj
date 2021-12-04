@@ -154,9 +154,10 @@ class Stage:
         self.user_attack = []
         self.monster_attack = []
         self.next_stage = False
+        self.background = None
 
     def run(self):
-        background = pygame.display.set_mode(self.display_size)
+        self.background = pygame.display.set_mode(self.display_size)
         for c in self.user_list:
             c.pos_init(self)
         for c in self.monster_list:
@@ -179,35 +180,33 @@ class Stage:
             
             if self.next_stage: break
             
-            background.blit(self.bg_image, (0, 0))
+            self.background.blit(self.bg_image, (0, 0))
             
             for c in self.user_list:
-                background.blit(c.image[c.curr_state], c.pos)
+                self.background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)
                 if c.attack: c.attack(c, self)
                 
             for c in self.monster_list:
-                background.blit(c.image[c.curr_state], c.pos)
+                self.background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)
                 if c.attack: c.attack(c, self)
 
             for a in self.user_attack[:]:
-                if a.image: background.blit(a.image, a.pos)
+                if a.image: self.background.blit(a.image, a.pos)
                 if not a.move(self): 
                     self.user_attack.remove(a)
                 
             for a in self.monster_attack[:]:
-                if a.image: background.blit(a.image, a.pos)
+                if a.image: self.background.blit(a.image, a.pos)
                 if not a.move(self):
                     self.monster_attack.remove(a)
 
             for b in self.frame.button:
-                b.draw(background) 
+                b.draw(self.background) 
 
             pygame.display.update()
             self.event_mouse.clear()
             self.event_key.clear()
-            if self.stage_number == 3:
-                time.sleep(5)
-            
+
         return self.next_stage
