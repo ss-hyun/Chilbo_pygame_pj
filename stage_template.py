@@ -45,7 +45,6 @@ class Spherical_Attack:
         if self.atk_mv_action != None:
             return self.atk_mv_action(self, curr_stage)
         
-<<<<<<< HEAD
 # 사각형 형태의 공격
 class Rectangle_Attack:
     def __init__(self, image, damage, range, pos, atk_move, sound = None):
@@ -195,12 +194,12 @@ class Stage:
                 if c.attack: c.attack(c, self)
 
             for a in self.user_attack[:]:
-                background.blit(a.image, a.pos)
+                if a.image: background.blit(a.image, a.pos)
                 if not a.move(self): 
                     self.user_attack.remove(a)
                 
             for a in self.monster_attack[:]:
-                background.blit(a.image, a.pos)
+                if a.image: background.blit(a.image, a.pos)
                 if not a.move(self):
                     self.monster_attack.remove(a)
 
