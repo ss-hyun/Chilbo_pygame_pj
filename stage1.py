@@ -108,15 +108,37 @@ def user_resize(ch):
 
 def user_attack(ch, game):
     for event in game.event_key:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), user_atk_move))
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:                       
+            # if (ch.curr_stste=0) or) (ch.curr_state == 4) or :
+               # ~~
+            user_attack_pos = ch.pos.copy()
+            if ch.curr_state == 0 or ch.curr_state == 4 or ch.curr_state == 5:
+                user_attack_pos[0] += 115 
+                user_attack_pos[1] += 50
+            if ch.curr_state == 1 or ch.curr_state == 6 or ch.curr_state == 7:
+                user_attack_pos[1] += 50
+            if ch.curr_state == 3 or ch.curr_state == 10 or ch.curr_state == 11:
+                user_attack_pos[0] += 120
+                user_attack_pos[1] += 50
+            if ch.curr_state == 2 or ch.curr_state == 8 or ch.curr_state == 9:
+               user_attack_pos[1] += 50     
             
-            #for user in game.user_list[:]:
-                #user.pos[user.curr_state]
-            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), user_atk_move))
+
+           
+            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], user_attack_pos, user_atk_move))
                                                   
 def user_atk_move(atk, game):
+    #for user in game.user_list[:]:
+        #if user.curr_state == 0 or user.curr_state == 4 or user.curr_state == 5:
+            #atk.pos[0] += 6
+        #elif user.curr_state == 1 or user.curr_state == 6 or user.curr_state == 7:
+            #atk.pos[0] -= 6
+        #elif user.curr_state == 3 or user.curr_state == 10 or user.curr_state == 11:
+            #atk.pos[1] -= 6
+        #else user.curr_state == 2 or user.curr_state == 9 or user.curr_state == 8:
+            #atk.pos[1] += 6
     atk.pos[1] -= 6
+
     for monster in game.monster_list[:]:
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
             if monster.name != "boss":           
