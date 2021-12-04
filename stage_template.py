@@ -90,7 +90,7 @@ class Character:
         self.positioning = info[2][1]
         self.attack = info[2][2]
         self.img_control = info[2][3]
-        # atk_list[i][0] : image surface, [1] : damage
+        # atk_list[i][0] : image surface, [1] : damage, [2] : range or size
         self.atk_list = []
         if info[3]:
             for atk in info[3]: self.atk_list.append((pygame.image.load(path+atk[0]) if atk[0] else None, atk[1], atk[2], pygame.mixer.Sound(path+atk[3]) if atk[3] else None))
@@ -161,7 +161,6 @@ class Stage:
         
         next_stage = False
         
-
         while self.frame.running:
             pygame.display.set_caption(self.frame.name)
             self.fps.tick(self.speed)
@@ -187,7 +186,7 @@ class Stage:
                 background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)
                 if c.attack: c.attack(c, self)
-
+                
             for c in self.monster_list:
                 background.blit(c.image[c.curr_state], c.pos)
                 c.move(self)

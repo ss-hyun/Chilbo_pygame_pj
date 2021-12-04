@@ -86,12 +86,10 @@ def move_user(ch, game):
             ch.change_count = 0 
     
 
-
 def user_start(ch, game):
-    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ] 
+    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])//2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
     if game.stage_number == 1:
         ch.hp = 100 #유저 체력        
-        print(ch.hp)
     if game.stage_number == 2:
         if ch.hp <= 100 and ch.hp >= 50:
             ch.hp = 100
@@ -109,12 +107,35 @@ def user_resize(ch):
 
 def user_attack(ch, game):
     for event in game.event_key:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy()+338, user_atk_move))
-
-                          
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:                       
+            # if (ch.curr_stste=0) or) (ch.curr_state == 4) or :
+               # ~~
+            user_attack_pos = ch.pos.copy()
+            if ch.curr_state == 0 or ch.curr_state == 4 or ch.curr_state == 5:
+                user_attack_pos[0] += 115 
+                user_attack_pos[1] += 50
+            if ch.curr_state == 1 or ch.curr_state == 6 or ch.curr_state == 7:
+                user_attack_pos[1] += 50
+            if ch.curr_state == 3 or ch.curr_state == 10 or ch.curr_state == 11:
+                user_attack_pos[0] += 120
+                user_attack_pos[1] += 50
+            if ch.curr_state == 2 or ch.curr_state == 8 or ch.curr_state == 9:
+               user_attack_pos[1] += 50     
+           
+            game.user_attack.append(stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], user_attack_pos, user_atk_move))
+                      
 def user_atk_move(atk, game):
+    #for user in game.user_list[:]:
+        #if user.curr_state == 0 or user.curr_state == 4 or user.curr_state == 5:
+            #atk.pos[0] += 6
+        #elif user.curr_state == 1 or user.curr_state == 6 or user.curr_state == 7:
+            #atk.pos[0] -= 6
+        #elif user.curr_state == 3 or user.curr_state == 10 or user.curr_state == 11:
+            #atk.pos[1] -= 6
+        #else user.curr_state == 2 or user.curr_state == 9 or user.curr_state == 8:
+            #atk.pos[1] += 6
     atk.pos[1] -= 6
+
     for monster in game.monster_list[:]:
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
             if monster.name != "boss":           
@@ -133,9 +154,8 @@ def user_atk_move(atk, game):
 #         ch.move_factor = random.randint(0,10)
 
 
-
 def boss_start(ch, game):
-    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, ch.size[ch.curr_state][1]-270 ]
+    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])//2, ch.size[ch.curr_state][1]-270 ]
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
@@ -283,7 +303,8 @@ def forceps_attack_1(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], 
+                                                        [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
                 game.monster_attack.append(atk)
                 atk.save_var['d1'] = random.randrange(1, 4)
 
@@ -302,9 +323,11 @@ def forceps_attack_move_1(atk, game):
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
-                if user.hp <= 0:
-                    game.user_list.remove(user)
+                if user.hp <= 0: game.user_list.remove(user)
             return False 
+    # if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
+    #     return False
+    # print(atk.save_var['d1'])
     return True
 
 def forceps_attack_2(ch, game):
@@ -484,11 +507,11 @@ def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
     # attack info : ( image path, damage, range )
-    user_atk_info = [ [ "/image/bullet.png", 1, 9, None ] ] #
-    fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]#
-    forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]#
-    saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]#
-    laser_atk_info = [ [ "/image/laser_field.png", 1 , 10, None ] ]#
+    user_atk_info = [ [ "/image/bullet.png", 1, 9, None ] ] 
+    fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
+    forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
+    saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]
+    laser_atk_info = [ [ "/image/laser_field.png", 1 , 10, None ] ]
 
 
     # character info : (name, relative path list, function list, attack info list, group)
@@ -538,4 +561,3 @@ def stage1(name, path, fps, speed):
     if have_next:    
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
         stage1_2.run()
-
