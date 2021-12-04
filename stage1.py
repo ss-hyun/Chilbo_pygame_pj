@@ -87,7 +87,7 @@ def move_user(ch, game):
     
 
 def user_start(ch, game):
-    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
+    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])//2, game.display_size[1]-ch.size[ch.curr_state][1]-10 ]
     if game.stage_number == 1:
         ch.hp = 100 #유저 체력        
     if game.stage_number == 2:
@@ -130,7 +130,7 @@ def user_atk_move(atk, game):
 
 
 def boss_start(ch, game):
-    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])/2, ch.size[ch.curr_state][1]-270 ]
+    ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])//2, ch.size[ch.curr_state][1]-270 ]
 
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
@@ -157,14 +157,19 @@ def arm_move_fist_1(ch, game):
         elif ch.curr_state == ch.state_num-4: ch.change_direc = False
         elif ch.curr_state == ch.state_num-1: ch.change_direc = False
         ch.curr_state += 1 if ch.change_direc else -1
-    
+
+def arm_atk_fist_1(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RCTRL:
                 ch.change_count= 0                
                 ch.curr_state = 3
                 ch.change_direc = True
-
+                atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], 
+                                                                ch.pos.copy(), fist_atk_move, ch.atk_list[0][3])
+                game.monster_attack.append(atk)
+                atk.save_var['ch'] = ch
+                
 
 def arm_move_fist_2(ch, game):
     ch.change_count += 1
@@ -174,13 +179,18 @@ def arm_move_fist_2(ch, game):
         elif ch.curr_state == ch.state_num-4: ch.change_direc = False
         elif ch.curr_state == ch.state_num-1: ch.change_direc = False
         ch.curr_state += 1 if ch.change_direc else -1
-    
+
+def arm_atk_fist_2(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LCTRL:
                 ch.change_count= 0                
                 ch.curr_state = 3
                 ch.change_direc = True
+                atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.size[ch.curr_state], 
+                                                                ch.pos.copy(), fist_atk_move, ch.atk_list[0][3])
+                game.monster_attack.append(atk)
+                atk.save_var['ch'] = ch
 
 def arm_move_forceps(ch, game):
     ch.change_count += 1
@@ -250,16 +260,27 @@ def arm6_start(ch, game):
     ch.pos = [ 995, 0 ]
     ch.curr_state = 1
 
-def fist_attack(ch, game):
-    
-    pass
+def fist_atk_move(atk, game):
+    ch = atk.save_var['ch']
+    if ch.curr_state > 2:
+        atk.range = ch.size[ch.curr_state]
+        for usr in game.user_list[:]:
+            if usr.pos[0] > atk.pos[0] + atk.range[0] or usr.pos[0] + usr.size[usr.curr_state][0] < atk.pos[0] \
+                    or usr.pos[1] > atk.pos[1] + atk.range[1] or usr.pos[1] + usr.size[usr.curr_state][1] < atk.pos[1]: continue
+            usr.hp -= atk.damage
+            atk.sound.play()
+            if usr.hp <= 0: game.user_list.remove(usr)
+            return False
+        return True
+    return False
 
 
 def forceps_attack_1(ch, game):
     for event in game.event_key:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_z:
-                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
+                atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], 
+                                                        [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
                 game.monster_attack.append(atk)
                 atk.save_var['d1'] = random.randrange(1, 4)
 
@@ -278,8 +299,7 @@ def forceps_attack_move_1(atk, game):
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
-                if user.hp <= 0:
-                    game.user_list.remove(user)
+                if user.hp <= 0: game.user_list.remove(user)
             return False
     return True
     
@@ -351,8 +371,7 @@ def saw_attack_move_1(atk, game):
         if user.pos[1] < atk.pos[1] and atk.pos[1] <= user.pos[1] + user.size[user.curr_state][1] and user.pos[0] < atk.pos[0] and atk.pos[0] <= user.pos[0] + user.size[user.curr_state][0] :
             if user.name == "user":           
                 user.hp -= atk.damage
-                if user.hp <= 0:
-                    game.user_list.remove(user)
+                if user.hp <= 0: game.user_list.remove(user)
             atk.remove_count = 2
             return True
     return True
@@ -435,10 +454,11 @@ def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
     # attack info : ( image path, damage, range )
-    user_atk_info = [ [ "/image/bullet.png", 1, 9 ] ] 
-    forceps_atk_info = [ ["/image/gugu.png", 5, 10] ]
-    saw_atk_info = [ ["/image/sawsaw.png", 10, 10] ]
-    laser_atk_info = [["/image/laser_field.png", 1 , 10]]
+    user_atk_info = [ [ "/image/bullet.png", 1, 9, None ] ] 
+    fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
+    forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
+    saw_atk_info = [ [ "/image/sawsaw.png", 10, 10, None  ] ]
+    laser_atk_info = [ [ "/image/laser_field.png", 1 , 10, None ] ]
 
     # character info : (name, relative path list, function list, attack info list, group)
     # # name : character name
@@ -449,8 +469,8 @@ def stage1(name, path, fps, speed):
     ch_info_list = [ ("user", [ "/image/오른1.png", "/image/왼1.png", "/image/앞1.png", "/image/뒤1.png" ,"/image/오른2.png", "/image/오른3.png", "/image/왼2.png","/image/왼3.png","/image/앞2.png", "/image/앞3.png", "/image/뒤2.png","/image/뒤3.png"], [ move_user, user_start, user_attack, user_resize ], user_atk_info, 0),
                      ("boss", [ "/image/exboss.svg" ], [ None, boss_start, None, boss_resize ], None, 1),                    
 
-                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, None, arm_trans ], None, 1),
-                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, None, arm_trans ], None, 1),
+                     ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, arm_atk_fist_1, arm_trans ], fist_atk_info, 1),
+                     ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, arm_atk_fist_2, arm_trans ], fist_atk_info, 1),
                      ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, forceps_attack_2, arm_trans ], forceps_atk_info, 1),
                      ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, forceps_attack_1, arm_trans ], forceps_atk_info, 1),
                      ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png","/image/saw2.png", "/image/saw2.png" ], [ arm_move_saw, arm5_start, saw_attack_1, arm_trans ], saw_atk_info, 1),

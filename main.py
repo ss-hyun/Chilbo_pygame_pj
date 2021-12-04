@@ -4,7 +4,8 @@ import pygame
 import button
 import stage1
 
-pygame.init
+pygame.init()
+pygame.mixer.init()
 
 # loading 
 path = os.path.dirname(os.path.realpath(__file__))  

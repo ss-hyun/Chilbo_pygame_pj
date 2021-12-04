@@ -47,12 +47,13 @@ class Spherical_Attack:
         
 # 사각형 형태의 공격
 class Rectangle_Attack:
-    def __init__(self, image, damage, range, pos, atk_move):
+    def __init__(self, image, damage, range, pos, atk_move, sound = None):
         self.image = image
         self.damage = damage
         self.atk_range = range
         self.pos = pos
         self.atk_mv_action = atk_move
+        self.sound = sound
         self.remove_count = 3
         # List of variables you want to save here
         # "variable name" : value
@@ -92,7 +93,8 @@ class Character:
         # atk_list[i][0] : image surface, [1] : damage
         self.atk_list = []
         if info[3]:
-            for atk in info[3]: self.atk_list.append((pygame.image.load(path+atk[0]), atk[1], atk[2]))
+            for atk in info[3]: self.atk_list.append((pygame.image.load(path+atk[0]) if atk[0] else None, atk[1], atk[2], pygame.mixer.Sound(path+atk[3]) if atk[3] else None))
+        if self.atk_list and self.atk_list[0][3]: self.atk_list[0][3].set_volume(0.02)
         # group : 1 - monster, 0 - user
         self.group = info[4]
         self.move_factor_x = 0
@@ -192,12 +194,12 @@ class Stage:
                 if c.attack: c.attack(c, self)
 
             for a in self.user_attack[:]:
-                background.blit(a.image, a.pos)
+                if a.image: background.blit(a.image, a.pos)
                 if not a.move(self): 
                     self.user_attack.remove(a)
                 
             for a in self.monster_attack[:]:
-                background.blit(a.image, a.pos)
+                if a.image: background.blit(a.image, a.pos)
                 if not a.move(self):
                     self.monster_attack.remove(a)
 
