@@ -131,10 +131,14 @@ def user_atk_move(atk, game):
 
     for monster in game.monster_list[:]:
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
-            if monster.name != "boss":           
+            if monster.name != "boss" and game.stage_number == 1:      
                 monster.hp -= atk.damage
                 if monster.hp <= 0:
-                    game.monster_list.remove(monster)               
+                    game.monster_list.remove(monster)
+            elif monster.name == "boss" and game.stage_number == 2:      
+                monster.hp -= atk.damage
+                if monster.hp <= 0:
+                    game.monster_list.remove(monster)
             return False 
     return True 
     
@@ -500,11 +504,12 @@ def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
     # attack info : ( image path, damage, range )
-    user_atk_info = [ [ "/image/bullet.png", 1, 9, None ] ] 
+    user_atk_info = [ [ "/image/bullet.png", 123, 9, None ] ] 
     fist_atk_info = [ [ None, 5, None, "/sound/punch.wav" ] ]
     forceps_atk_info = [ [ "/image/gugu.png", 5, 10, None ] ]
     saw_atk_info = [ [ "/image/sawsaw.png", 10, 20, None  ] ]
-    laser_atk_info = [ [ "/image/laser_attack.png", 1 , 10, None ] ]
+    laser_atk_info = [ [ "/image/laser_attack.png", 10 , 10, None ] ]
+    laser1_atk_info = [ [ "/image/laser_attack1.png", 10 , 10, None ] ]
 
 
     # character info : (name, relative path list, function list, attack info list, group)
@@ -562,13 +567,48 @@ def stage1(name, path, fps, speed):
             return False
         return True
 
+    def laser_waring_start1(ch, game):
+        #X = 0
+        ch.pos = [ 500, 300 ]
+
+    def laser_waring_move1(ch, game):
+        i = random.randrange(300, 800)
+        ch.change_count += 1
+        print(ch.change_count)
+        ch.state_change_speed = 120
+        if ch.change_count == 120:
+            ch.change_count = 0
+            print(i)
+        elif ch.change_count == 1:
+            ch.pos[1] = i
+        elif ch.change_count == 81:
+            ch.pos[1] = 1500
+
+    def laser_attack1(ch, game):
+        if ch.change_count == 80:
+            atk = stage_template.Rectangle_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], ch.pos.copy(), laser_attack_move1)
+            game.monster_attack.append(atk)
+            atk.save_var['ch'] = ch
+
+    def laser_attack_move1(atk, game):
+        ch = atk.save_var['ch']
+        if ch.change_count >= 80 and ch.change_count <= 100:
+            atk.range = ch.size[ch.curr_state]
+            for user in game.user_list[:]:
+                if user.pos[0] > atk.pos[0] + atk.range[0] or user.pos[0] + user.size[user.curr_state][0] < atk.pos[0] or user.pos[1] > atk.pos[1] + atk.range[1] or user.pos[1] + user.size[user.curr_state][1] < atk.pos[1]: continue
+                user.hp -= atk.damage
+                if user.hp <= 0: game.user_list.remove(user)
+        if ch.change_count == 1:
+            return False
+        return True
+
 
 
     ch_info_list = ["user", "boss", 
                      ("laser_field1", [ "/image/laser_field.png" ], [ None, laser_field1_start, None, None ], None, 1),
                      ("laser_field2", [ "/image/laser_field.png" ], [ None, laser_field2_start, None, None ], None, 1),
                      ("laser_waring", ["/image/waring.png"], [laser_waring_move, laser_waring_start, laser_attack, None], laser_atk_info, 1),
-                     ("laser_waring1", ["/image/waring3.png"], [None, None, None, None], None, 1)]
+                     ("laser_waring1", ["/image/waring3.png"], [laser_waring_move1, laser_waring_start1, laser_attack1, None], laser1_atk_info, 1)]
 
     if have_next:    
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
@@ -577,3 +617,4 @@ def stage1(name, path, fps, speed):
     if have_next:
         stage_end = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
         stage_end.run()
+
