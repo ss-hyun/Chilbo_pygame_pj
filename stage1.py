@@ -327,7 +327,7 @@ def forceps_attack_move_1(atk, game):
 
 def forceps_attack_2(ch, game):
     if random.randrange(1, 175) == 4:
-        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+200 ], forceps_attack_move_2)
+        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+15, ch.pos[1]+190 ], forceps_attack_move_2)
         game.monster_attack.append(atk)
         atk.save_var['d2'] = random.randrange(1, 4)
 
