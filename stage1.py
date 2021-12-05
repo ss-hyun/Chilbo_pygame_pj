@@ -618,13 +618,18 @@ def stage1(name, path, fps, speed):
                      ("laser_waring", ["/image/waring.png"], [laser_waring_move, laser_waring_start, laser_attack, None], laser_atk_info, 1),
                      ("laser_waring1", ["/image/waring3.png"], [laser_waring_move1, laser_waring_start1, laser_attack1, None], laser1_atk_info, 1)]
 
-    if have_next:    
+    if have_next:  
+        if not stage1_1.user_list :
+            bg_image = pygame.image.load(path + "/image/game_over.jpg")
+            stage_template.Stage(name, 0, path, fps, speed, bg_image, [])
+            return
+
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
         have_next = stage1_2.run()
 
     bg_image = pygame.image.load(path + "/image/ending.jpg")
 
     if have_next:
-        stage_end = stage_template.Stage(name, 3, path, fps, speed, bg_image, [])
+        stage_end = stage_template.Stage(name, 0, path, fps, speed, bg_image, [])
         stage_end.run()
 
