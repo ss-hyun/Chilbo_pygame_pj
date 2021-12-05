@@ -95,8 +95,7 @@ def user_start(ch, game):
         if ch.hp <= 100 and ch.hp >= 50:
             ch.hp = 100
         elif ch.hp < 50 and ch.hp > 0:
-            ch.hp += 50 
-        print(ch.hp)
+            ch.hp += 50        
         ch.hp + 50 <= 100
     
 def user_resize(ch):
@@ -297,7 +296,7 @@ def fist_atk_move(atk, game):
     return False
 
 def forceps_attack_1(ch, game):
-    if random.randrange(1, 175) == 4:
+    if random.randrange(1, 150) == 4:
         atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], 
                                                 [ ch.pos[0]+75 , ch.pos[1]+180 ], forceps_attack_move_1)
         game.monster_attack.append(atk)
@@ -326,7 +325,7 @@ def forceps_attack_move_1(atk, game):
     return True
 
 def forceps_attack_2(ch, game):
-    if random.randrange(1, 175) == 4:
+    if random.randrange(1, 150) == 4:
         atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+15, ch.pos[1]+190 ], forceps_attack_move_2)
         game.monster_attack.append(atk)
         atk.save_var['d2'] = random.randrange(1, 4)
@@ -353,7 +352,7 @@ def forceps_attack_move_2(atk, game):
 
 def saw_attack_1(ch, game):
     l = 3
-    if random.randrange(1, 200) == 4:
+    if random.randrange(1, 250) == 4:
         atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+175 , ch.pos[1]+250 ], saw_attack_move_1)
         game.monster_attack.append(atk)
         atk.remove_count == 3
@@ -409,10 +408,9 @@ def saw_attack_move_1(atk, game):
 
 def saw_attack_2(ch, game):
     l = 10
-    if random.randrange(1, 200) == 4:
+    if random.randrange(1, 250) == 4:
         atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+15 , ch.pos[1]+250 ], saw_attack_move_2)
         game.monster_attack.append(atk)
-        print(ch.pos[0]+10 , ch.pos[1]+250 )
         atk.remove_count = 3
         atk.save_var['Ss2'] = random.randrange(1, 4)
         atk.save_var['Sscount2'] = l
