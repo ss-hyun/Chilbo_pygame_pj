@@ -179,6 +179,7 @@ class Stage:
                 continue                
             
             if self.next_stage: break
+            if self.stage_number and not self.user_list: break
             
             self.background.blit(self.bg_image, (0, 0))
             

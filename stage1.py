@@ -3,12 +3,8 @@ import pygame
 from pygame.constants import KEYUP
 import stage_template
 import random
-import time
-
-
 
 def move_user(ch, game):
-    # ch.pos[0] += ch.move_factor
     ch.pos[0] += ch.move_factor_x 
     ch.pos[1] += ch.move_factor_y    
 
@@ -21,10 +17,6 @@ def move_user(ch, game):
     if ch.pos[0] > 1130:
         ch.pos[0] = 1130
 
-    #if ch.curr_state == 0 and ch.pos[0] > game.display_size[0]:
-        #ch.pos[0] = -ch.size[ch.curr_state][0]
-    #elif ch.curr_state == 1 and ch.pos[0] + ch.size[ch.curr_state][0] < 0:
-        #ch.pos[0] = game.display_size[0]
     speed = 3
     if ch.move_state == True:
         ch.change_count += 1
@@ -74,7 +66,6 @@ def move_user(ch, game):
             elif event.key == pygame.K_LEFT:
                 ch.move_factor_x = 0
                 ch.curr_state = 1
-    #print(ch.pos[0])
 
     if ch.move_state == True:
         if ch.change_count == 10:
@@ -100,7 +91,6 @@ def user_start(ch, game):
         ch.hp + 50 <= 100
     
 def user_resize(ch):
-    # image_boss = pygame.image.load("/image/exboss.svg")
     l = len(ch.image)
     for i in range(0, l):
         ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.25)
@@ -109,9 +99,7 @@ def user_resize(ch):
 
 def user_attack(ch, game):
     for event in game.event_key:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:                       
-            # if (ch.curr_stste=0) or) (ch.curr_state == 4) or :
-               # ~~
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:          
             user_attack_pos = ch.pos.copy()
             if ch.curr_state == 0 or ch.curr_state == 4 or ch.curr_state == 5:
                 user_attack_pos[0] += 105 
@@ -133,11 +121,11 @@ def user_atk_move(atk, game):
         if monster.name == "laser_waring" or monster.name == "laser_waring1" or monster.name == "laser_field1" or monster.name == "laser_field2":
             break
         if atk.pos[1] <= monster.pos[1] + monster.size[monster.curr_state][1] and monster.pos[0] < atk.pos[0] and atk.pos[0] < monster.pos[0] + monster.size[monster.curr_state][0] :
-            if monster.name != "boss" and game.stage_number == 1:      
+            if game.stage_number == 1 and monster.name != "boss":      
                 monster.hp -= atk.damage
                 if monster.hp <= 0:
                     game.monster_list.remove(monster)
-            elif monster.name == "boss" and game.stage_number == 2:      
+            elif game.stage_number == 2 and monster.name == "boss":      
                 monster.hp -= atk.damage
                 if monster.hp <= 0:
                     game.monster_list.remove(monster)
@@ -145,35 +133,17 @@ def user_atk_move(atk, game):
             return False 
     return True 
     
-
-# def boss_moving(ch, game):
-#     ch.pos[0] += ch.move_factor
-#     if ch.pos[0] + ch.size[ch.curr_state][0] > game.display_size[0]:
-#         ch.move_factor = -random.randint(0,10)
-#     elif ch.pos[0] < 0:
-#         ch.move_factor = random.randint(0,10)
-
-
 def boss_start(ch, game):    
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])//2, ch.size[ch.curr_state][1]-270 ]
     if game.stage_number == 2:
         ch.hp = 120
 def boss_resize(ch):
-    # image_boss = pygame.image.load("/image/exboss.svg")
     l = len(ch.image)
     for i in range(0, l):
         ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 1.3)
         # size variable change
         ch.size[i] = ch.image[i].get_rect().size
 
-
-# def arm_move(ch, game):
-#     ch.change_count += 1
-#     if ch.change_count == ch.state_change_speed:
-#         ch.change_count= 1
-#         if ch.curr_state == 0: ch.change_direc = True
-#         elif ch.curr_state == ch.state_num-1: ch.change_direc = False
-#         ch.curr_state += 1 if ch.change_direc else -1
 
 def arm_move_fist_1(ch, game):
     ch.change_count += 1
@@ -320,9 +290,6 @@ def forceps_attack_move_1(atk, game):
                 user.hp -= atk.damage
                 if user.hp <= 0: game.user_list.remove(user)
             return False 
-    # if atk.pos[0] >= 1000 or atk.pos[1] >= 800:
-    #     return False
-    # print(atk.save_var['d1'])
     return True
 
 def forceps_attack_2(ch, game):
@@ -539,7 +506,6 @@ def stage1(name, path, fps, speed):
     bg_image = pygame.image.load(path + "/image/boss_stage_test.jpg")
 
     def laser_waring_start(ch, game):
-        #X = 0
         ch.pos = [ 500, 300 ]
 
     def laser_waring_move(ch, game):
@@ -573,7 +539,6 @@ def stage1(name, path, fps, speed):
         return True
 
     def laser_waring_start1(ch, game):
-        #X = 0
         ch.pos = [ 0, 300 ]
 
     def laser_waring_move1(ch, game):
@@ -618,18 +583,20 @@ def stage1(name, path, fps, speed):
                      ("laser_waring", ["/image/waring.png"], [laser_waring_move, laser_waring_start, laser_attack, None], laser_atk_info, 1),
                      ("laser_waring1", ["/image/waring3.png"], [laser_waring_move1, laser_waring_start1, laser_attack1, None], laser1_atk_info, 1)]
 
-    if have_next:  
-        if not stage1_1.user_list :
-            bg_image = pygame.image.load(path + "/image/game_over.jpg")
-            stage_template.Stage(name, 0, path, fps, speed, bg_image, [])
-            return
-
+    if have_next:
         stage1_2 = stage_template.Stage(name, 2, path, fps, speed, bg_image, ch_info_list, stage1_1)
         have_next = stage1_2.run()
+
+
+    if not stage1_1.user_list :
+        bg_image = pygame.image.load(path + "/image/game_over.jpg")
+        game_over = stage_template.Stage(name, 0, path, fps, speed, bg_image, [])
+        game_over.run()
+        return
 
     bg_image = pygame.image.load(path + "/image/ending.jpg")
 
     if have_next:
-        stage_end = stage_template.Stage(name, 0, path, fps, speed, bg_image, [])
-        stage_end.run()
+        clear = stage_template.Stage(name, 0, path, fps, speed, bg_image, []).run()
+        clear.run()
 
