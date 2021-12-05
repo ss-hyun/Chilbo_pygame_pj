@@ -103,7 +103,7 @@ def user_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
     l = len(ch.image)
     for i in range(0, l):
-        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.3)
+        ch.image[i] = pygame.transform.rotozoom(ch.image[i], 0, 0.25)
         # size variable change
         ch.size[i] = ch.image[i].get_rect().size
 
@@ -114,12 +114,12 @@ def user_attack(ch, game):
                # ~~
             user_attack_pos = ch.pos.copy()
             if ch.curr_state == 0 or ch.curr_state == 4 or ch.curr_state == 5:
-                user_attack_pos[0] += 115 
+                user_attack_pos[0] += 105 
                 user_attack_pos[1] += 50
             if ch.curr_state == 1 or ch.curr_state == 6 or ch.curr_state == 7:
                 user_attack_pos[1] += 50
             if ch.curr_state == 3 or ch.curr_state == 10 or ch.curr_state == 11:
-                user_attack_pos[0] += 120
+                user_attack_pos[0] += 108
                 user_attack_pos[1] += 50
             if ch.curr_state == 2 or ch.curr_state == 8 or ch.curr_state == 9:
                user_attack_pos[1] += 50                 
@@ -154,9 +154,10 @@ def user_atk_move(atk, game):
 #         ch.move_factor = random.randint(0,10)
 
 
-def boss_start(ch, game):
+def boss_start(ch, game):    
     ch.pos = [ (game.display_size[0]-ch.size[ch.curr_state][0])//2, ch.size[ch.curr_state][1]-270 ]
-
+    if game.stage_number == 2:
+        ch.hp = 120
 def boss_resize(ch):
     # image_boss = pygame.image.load("/image/exboss.svg")
     l = len(ch.image)
@@ -263,12 +264,12 @@ def arm2_start(ch, game):
 
 def arm3_start(ch, game):
     ch.hp = 30
-    ch.pos = [ 190, 0 ]
+    ch.pos = [ 183, 0 ]
     ch.curr_state = 1
 
 def arm4_start(ch, game):
     ch.hp = 30
-    ch.pos = [ 810, 0 ]
+    ch.pos = [ 973, 0 ]
     ch.curr_state = 1
 
 def arm5_start(ch, game):
@@ -278,7 +279,7 @@ def arm5_start(ch, game):
 
 def arm6_start(ch, game):
     ch.hp = 30
-    ch.pos = [ 995, 0 ]
+    ch.pos = [ 1010, 0 ]
     ch.curr_state = 1
 
 def fist_atk_move(atk, game):
@@ -409,8 +410,9 @@ def saw_attack_move_1(atk, game):
 def saw_attack_2(ch, game):
     l = 10
     if random.randrange(1, 200) == 4:
-        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+0 , ch.pos[1]+250 ], saw_attack_move_2)
+        atk = stage_template.Spherical_Attack(ch.atk_list[0][0], ch.atk_list[0][1], ch.atk_list[0][2], [ ch.pos[0]+15 , ch.pos[1]+250 ], saw_attack_move_2)
         game.monster_attack.append(atk)
+        print(ch.pos[0]+10 , ch.pos[1]+250 )
         atk.remove_count = 3
         atk.save_var['Ss2'] = random.randrange(1, 4)
         atk.save_var['Sscount2'] = l
@@ -436,7 +438,7 @@ def saw_attack_move_2(atk, game):
         elif atk.save_var['Ss2'] == 3:
             atk.pos[0] += 6
             atk.pos[1] -= 2
-    if atk.pos[0] >= 1000 or atk.pos[1] <= 200:
+    if atk.pos[0] >= 1025 or atk.pos[1] <= 250:
         atk.remove_count = 3
         return False
     if atk.pos[0] <= 0 or atk.pos[1] >= game.display_size[1] - 70:
@@ -524,10 +526,10 @@ def stage1(name, path, fps, speed):
 
                      ("boss_arm1", [ "/image/fist.png", "/image/fist_+1.png", "/image/fist_+2.png", "/image/fist_attack.png", "/image/fist_attack_+1.png", "/image/fist_attack_+2.png"  ], [ arm_move_fist_1, arm2_start, arm_atk_fist_1, arm_trans ], fist_atk_info, 1),
                      ("boss_arm2", [ "/image/r_fist.png", "/image/r_fist_+1.png", "/image/r_fist_+2.png", "/image/r_fist_attack.png", "/image/r_fist_attack_+1.png", "/image/r_fist_attack_+2.png" ], [ arm_move_fist_2, arm1_start, arm_atk_fist_2, arm_trans ], fist_atk_info, 1),
-                     ("boss_arm3", [ "/image/forceps_1.png", "/image/forceps_2.png", "/image/forceps_2.png", "/image/forceps_1.png", "/image/forceps_1.png" ], [ arm_move_forceps, arm4_start, forceps_attack_2, arm_trans ], forceps_atk_info, 1),
-                     ("boss_arm4", [ "/image/r_forceps_1.png", "/image/r_forceps_2.png", "/image/r_forceps_2.png", "/image/r_forceps_1_attack_1.png", "/image/r_forceps_1_attack_2.png" ], [ arm_move_forceps, arm3_start, forceps_attack_1, arm_trans ], forceps_atk_info, 1),
-                     ("boss_arm5", [ "/image/saw2.png", "/image/saw2_+1.png", "/image/saw2_+2.png", "/image/saw2_+1.png","/image/saw2.png", "/image/saw2.png" ], [ arm_move_saw, arm5_start, saw_attack_1, arm_trans ], saw_atk_info, 1),
-                     ("boss_arm6", [ "/image/r_saw2.png", "/image/r_saw2_+1.png", "/image/r_saw2_+2.png", "/image/r_saw2_+1.png", "/image/r_saw2.png", "/image/r_saw2.png" ], [ arm_move_saw, arm6_start, saw_attack_2, arm_trans ], saw_atk_info, 1),
+                     ("boss_arm3", [ "/image/forceps_A.png", "/image/forceps_B.png", "/image/forceps_B.png", "/image/forceps_A.png", "/image/forceps_A.png" ], [ arm_move_forceps, arm4_start, forceps_attack_2, arm_trans ], forceps_atk_info, 1),
+                     ("boss_arm4", [ "/image/r_forceps_A.png", "/image/r_forceps_B.png", "/image/r_forceps_B.png", "/image/r_forceps_1_attack_A.png", "/image/r_forceps_1_attack_B.png" ], [ arm_move_forceps, arm3_start, forceps_attack_1, arm_trans ], forceps_atk_info, 1),
+                     ("boss_arm5", [ "/image/sawB.png", "/image/sawB_+1.png", "/image/sawB_+2.png", "/image/sawB_+1.png","/image/sawB.png", "/image/sawB.png" ], [ arm_move_saw, arm5_start, saw_attack_1, arm_trans ], saw_atk_info, 1),
+                     ("boss_arm6", [ "/image/r_sawB.png", "/image/r_sawB_+1.png", "/image/r_sawB_+2.png", "/image/r_sawB_+1.png", "/image/r_sawB.png", "/image/r_sawB.png" ], [ arm_move_saw, arm6_start, saw_attack_2, arm_trans ], saw_atk_info, 1),
                     ]
 
     
@@ -606,8 +608,8 @@ def stage1(name, path, fps, speed):
 
 
     # attack info : ( image path, damage, range, sound )
-    laser_atk_info = [ [ "/image/laser_attack.png", 0.5 , 10, None ] ]
-    laser1_atk_info = [ [ "/image/laser_attack1.png", 0.5 , 10, None ] ]
+    laser_atk_info = [ [ "/image/laser_attack.png", 2 , 10, None ] ]
+    laser1_atk_info = [ [ "/image/laser_attack1.png", 2 , 10, None ] ]
     laser_field_atk_info = [ [ None, 5, None, None ] ]
 
     ch_info_list = ["user", "boss", 
